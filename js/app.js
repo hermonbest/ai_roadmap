@@ -130,12 +130,11 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="video-embed-card">
               <div class="video-embed-header">
                 <span class="video-icon">📺</span>
-                <a href="${url}" target="_blank" rel="noopener noreferrer" class="video-link">${linkText} <span style="font-size:0.75rem; color:var(--secondary-accent); font-weight:normal;">(Open on YouTube ↗)</span></a>
+                <a href="${url}" target="_blank" rel="noopener noreferrer" class="video-link">${linkText} <span class="video-external-link">(Open on YouTube ↗)</span></a>
               </div>
-              <div class="video-body" style="display:block;">
-                <div class="video-iframe-wrapper" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:10px; border:1px solid var(--border-color); margin-top:0.75rem;">
+              <div class="video-body visible">
+                <div class="video-iframe-wrapper">
                   <iframe src="https://www.youtube.com/embed/${videoId}" 
-                          style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;" 
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                           allowfullscreen></iframe>
                 </div>
