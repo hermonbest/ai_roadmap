@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Powered Coding Roadmap — Interactive Learning Platform</title>
+  <meta name="description" content="An interactive, high-performance web course guiding you from zero coding knowledge to building and deploying full-stack apps with AI coding tools.">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    frame-src https://www.youtube.com https://www.youtube-nocookie.com;
+    img-src 'self' data: https:;
+    connect-src 'self';
+  ">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <a href="#" class="brand">
+      <span class="brand-badge">COURSE</span>
+      <span>AI-Powered Coding Roadmap</span>
+    </a>
+    
+    <div class="nav-actions">
+      <button class="search-trigger-btn" id="search-trigger-btn">
+        <span>🔍 Search topics...</span>
+        <span class="kbd-shortcut">Ctrl K</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Application Shell Container -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-title">Course Roadmap Stages</div>
+      <div id="stage-nav-list"></div>
+    </aside>
+
+    <!-- Main Content Viewport -->
+    <main class="main-viewport" id="main-viewport"></main>
+  </div>
+
+  <!-- Command Palette Modal (Ctrl + K) -->
+  <div class="modal-backdrop" id="command-modal">
+    <div class="command-modal">
+      <div class="command-input-wrapper">
+        <span>🔍</span>
+        <input type="text" class="command-input" id="command-input" placeholder="Search lessons, concepts, prompts..." />
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div class="command-results" id="command-results"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/course-data.js"></script>
+  <script src="js/widgets.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
