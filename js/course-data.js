@@ -298,7 +298,7 @@ The goal of this course isn't to make you memorize syntax. It's to make sure you
           {
             title: "Resources for Module 1.3",
             content: `- Website: [freeCodeCamp – Learn to Code: A Guide for Complete Beginners](https://www.freecodecamp.org/news/learn-to-code-where-to-start/) — general guidance on pacing and expectations for self-taught beginners
-- Video: [Coding for Beginners: How Long Does It REALLY Take to Learn?](https://www.youtube.com/watch?v=e9aRBO3vcKo) — beginner-focused perspectives on realistic expectations`
+- Video: [How long does it take to "Learn to Code"?](https://www.youtube.com/watch?v=nUqwvfXMs0U) — beginner-focused perspectives on realistic expectations`
           }
         ]
       }
