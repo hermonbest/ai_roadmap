@@ -72,6 +72,11 @@ Once your own project works, read through an open-source project on GitHub in a 
 
 New tools and frameworks appear constantly, and no one keeps up with all of them. Pick a small number of reliable sources (one newsletter, one YouTube channel, one community) instead of trying to track everything. The fundamentals from Stages 1 through 4 change slowly. The tools on top of them change fast. Knowing the difference keeps new releases from feeling like you're starting over each time.
 
+### Resources for the Closing Module
+- Website: [GitHub Explore](https://github.com/explore) — a starting point for finding open-source projects to read, organized by topic and language
+- Website: [freeCodeCamp News](https://www.freecodecamp.org/news/) — a steady source of beginner-to-intermediate articles for staying current without chasing every new tool
+- Video: [How to Read Other People's Code | Beginner Developer Skill](https://www.youtube.com/watch?v=5N98tJyrqGc) — approaches to Lesson 2
+
 ---
 
 Course complete. You started with no coding background and now have a working, deployed, full-stack application, built using the same fundamentals and the same AI tools professional developers use daily.

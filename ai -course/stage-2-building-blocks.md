@@ -122,6 +122,10 @@ Using what you've learned so far, build a page with:
 
 Don't worry about how it looks yet. That's next.
 
+### Resources for Module 2.1
+- Website: [MDN – Introduction to HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML) — the standard reference for HTML basics, with practice exercises
+- Video: [HTML Tutorial – Website Crash Course for Beginners (freeCodeCamp)](https://www.youtube.com/watch?v=916GWv2Qs08) — a good starting point for the HTML in this module
+
 ---
 
 ## Module 2.2 — CSS (style)
@@ -218,6 +222,11 @@ Apply what you've learned to the profile page from Module 2.1:
 - Give it a font, colors, and spacing that don't look like the browser's default
 - Arrange the interests list using flexbox
 - Add a media query so the layout adjusts on a narrow screen
+
+### Resources for Module 2.2
+- Website: [MDN – CSS first steps](https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps) — covers selectors, the box model, and layout basics in more depth
+- Website: [Flexbox Froggy](https://flexboxfroggy.com/) — a short interactive game for practicing flexbox
+- Video: [CSS Flexbox Crash Course (freeCodeCamp)](https://www.youtube.com/watch?v=tXIhdp5R7sc) — a visual walkthrough of Lesson 3
 
 ---
 
@@ -320,6 +329,11 @@ Add one of the following to your profile page:
 - A counter that increases by one each time a button is clicked
 
 Any of these uses everything from this module: variables, a function, an event listener, and the DOM.
+
+### Resources for Module 2.3
+- Website: [MDN – JavaScript first steps](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps) — covers variables, functions, and the DOM with runnable examples
+- Website: [javascript.info](https://javascript.info/) — a thorough, free, modern JavaScript tutorial for going deeper than this module
+- Video: [Learn JavaScript – Full Course for Beginners (freeCodeCamp)](https://www.youtube.com/watch?v=PkZNo7MFNFg) — covers variables, functions, arrays, and the DOM from this module
 
 ---
 

@@ -184,12 +184,31 @@ document.addEventListener("DOMContentLoaded", () => {
       ${stage.modules.map((module) => `
         <div class="module-card">
           <h2 class="module-title">${module.title}</h2>
-          ${module.lessons.map((lesson) => `
-            <div class="lesson-block">
-              <h3 class="lesson-title">${lesson.title}</h3>
-              <div class="lesson-body">${formatMarkdown(lesson.content)}</div>
-            </div>
-          `).join("")}
+          ${module.lessons.map((lesson) => {
+            const ill = lesson.illustration;
+            let illHtml = "";
+            if (ill) {
+              if (ill.type === "interactive") {
+                illHtml = `<div class="lesson-illustration interactive-visual">${ill.html}</div>`;
+              } else {
+                illHtml = `
+                  <div class="lesson-illustration">
+                    <figure>
+                      <img src="${ill.src}" alt="${ill.alt}" loading="lazy">
+                      ${ill.caption ? `<figcaption>${ill.caption}</figcaption>` : ""}
+                    </figure>
+                  </div>
+                `;
+              }
+            }
+            return `
+              <div class="lesson-block">
+                <h3 class="lesson-title">${lesson.title}</h3>
+                <div class="lesson-body">${formatMarkdown(lesson.content)}</div>
+                ${illHtml}
+              </div>
+            `;
+          }).join("")}
         </div>
       `).join("")}
 
@@ -202,6 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div id="quiz-container"></div>
       </div>
     `;
+
+    // Render Lesson Illustrations
+    mainViewport.querySelectorAll(".lesson-illustration.interactive-visual").forEach((el) => {
+      wireInteractiveVisual(el);
+    });
 
     // Mount Interactive Laboratory Widget
     const labMount = document.getElementById("interactive-lab-mount");
@@ -225,6 +249,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Scroll to top
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Wire the interactive house-light toggle. The SVG markup is injected via
+  // innerHTML, so its original inline script never runs (and the app's
+  // Content-Security-Policy forbids it anyway), so the switch logic lives here.
+  function wireInteractiveVisual(container) {
+    const toggle = container.querySelector("#light-toggle");
+    if (!toggle) return;
+    toggle.removeAttribute("onchange");
+    toggle.addEventListener("change", () => {
+      const on = toggle.checked;
+      const glow = container.querySelector("#bulb-glow");
+      const bulb = container.querySelector("#bulb");
+      const windowEl = container.querySelector("#window");
+      if (glow) {
+        glow.setAttribute("opacity", on ? "0.7" : "0");
+        glow.classList.toggle("on", on);
+      }
+      if (bulb) bulb.setAttribute("fill", on ? "#F2A623" : "var(--surface-1)");
+      if (windowEl) windowEl.setAttribute("fill", on ? "#FAEEDA" : "var(--surface-0)");
+    });
   }
 
   // 3. Render Interactive Quiz Engine

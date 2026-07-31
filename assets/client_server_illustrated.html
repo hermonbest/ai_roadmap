@@ -1,0 +1,53 @@
+<style>
+@keyframes pulse { 0%,100%{opacity:.4; transform:scale(1)} 50%{opacity:1; transform:scale(1.15)} }
+.envelope { transform-origin: center; animation: pulse 1.8s ease-in-out infinite; }
+#env-response { animation-delay: .9s; }
+.led { animation: pulse 1.4s ease-in-out infinite; }
+.led:nth-child(2) { animation-delay: .3s; }
+.led:nth-child(3) { animation-delay: .6s; }
+.led:nth-child(4) { animation-delay: .9s; }
+@media (prefers-reduced-motion: reduce) { .envelope, .led { animation: none; opacity: .8; } }
+</style>
+<svg width="100%" viewBox="0 0 680 340" role="img">
+<title>Client and server shown as a browser window and a server rack</title>
+<desc>A browser window on the left sends a request to a server rack on the right, and the server rack sends back a response, shown as two small envelope icons traveling along curved paths.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+
+<rect x="40" y="140" width="180" height="130" rx="8" fill="none" stroke="var(--t)" stroke-width="1.2"/>
+<rect x="40" y="140" width="180" height="26" rx="8" class="c-gray" stroke-width="0.5"/>
+<circle cx="56" cy="153" r="4" fill="#D85A30"/><circle cx="70" cy="153" r="4" fill="#EF9F27"/><circle cx="84" cy="153" r="4" fill="#639922"/>
+<line x1="55" y1="188" x2="180" y2="188" stroke="var(--border-strong)" stroke-width="2"/>
+<line x1="55" y1="204" x2="150" y2="204" stroke="var(--border-strong)" stroke-width="2"/>
+<line x1="55" y1="220" x2="165" y2="220" stroke="var(--border-strong)" stroke-width="2"/>
+<line x1="55" y1="236" x2="120" y2="236" stroke="var(--border-strong)" stroke-width="2"/>
+<text class="th" x="130" y="303" text-anchor="middle">Client</text>
+<text class="ts" x="130" y="320" text-anchor="middle">your browser</text>
+
+<rect x="480" y="90" width="120" height="180" rx="6" fill="none" stroke="var(--t)" stroke-width="1.2"/>
+<rect x="495" y="112" width="90" height="24" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+<circle class="led" cx="580" cy="124" r="3.5" fill="#3B6D11"/>
+<rect x="495" y="146" width="90" height="24" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+<circle class="led" cx="580" cy="158" r="3.5" fill="#3B6D11"/>
+<rect x="495" y="180" width="90" height="24" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+<circle class="led" cx="580" cy="192" r="3.5" fill="#3B6D11"/>
+<rect x="495" y="214" width="90" height="24" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+<circle class="led" cx="580" cy="226" r="3.5" fill="#3B6D11"/>
+<text class="th" x="540" y="303" text-anchor="middle">Server</text>
+<text class="ts" x="540" y="320" text-anchor="middle">stores the site's files</text>
+
+<path d="M225 175 C310 130, 400 130, 475 165" fill="none" stroke="var(--t)" stroke-width="1.2" marker-end="url(#arrow)"/>
+<g class="envelope" id="env-request">
+<rect x="330" y="130" width="26" height="18" rx="2" fill="var(--surface-1)" stroke="var(--t)" stroke-width="1"/>
+<path d="M330 130 L343 143 L356 130" fill="none" stroke="var(--t)" stroke-width="1"/>
+</g>
+<text class="ts" x="343" y="118" text-anchor="middle">Request</text>
+
+<path d="M475 195 C400 240, 310 240, 225 205" fill="none" stroke="var(--t)" stroke-width="1.2" marker-end="url(#arrow)"/>
+<g class="envelope" id="env-response">
+<rect x="330" y="222" width="26" height="18" rx="2" fill="var(--surface-1)" stroke="var(--t)" stroke-width="1"/>
+<path d="M330 222 L343 235 L356 222" fill="none" stroke="var(--t)" stroke-width="1"/>
+</g>
+<text class="ts" x="343" y="258" text-anchor="middle">Response</text>
+</svg>

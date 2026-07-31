@@ -46,6 +46,10 @@ With Live Server installed, right-click your `index.html` file and choose "Open 
 
 For JavaScript, VS Code has a built-in debugger that lets you pause code mid-run and inspect what's happening. You'll use this more once your code gets complex enough that `console.log` alone isn't enough to find a bug, which comes up in Stage 4's debugging module.
 
+### Resources for Module 3.1
+- Website: [VS Code Docs – Getting Started](https://code.visualstudio.com/docs) — official documentation covering the interface, extensions, and debugging
+- Video: [VS Code Tutorial – Become More Productive (freeCodeCamp)](https://www.youtube.com/watch?v=heXQnM99oAI) — a current walkthrough of the interface and extensions
+
 ---
 
 ## Module 3.2 — The Command Line
@@ -98,6 +102,10 @@ Error: Cannot find module 'express'
 Read the first line first. "Cannot find module 'express'" means the code is trying to use something called `express` that hasn't been installed. The fix, in this case, is running `npm install express`.
 
 Habit worth building now: read the first line of any error before scrolling through the rest.
+
+### Resources for Module 3.2
+- Website: [freeCodeCamp – The Linux Commands Handbook](https://www.freecodecamp.org/news/the-linux-commands-handbook/) — covers the core commands from this module and more, at a beginner pace
+- Video: [Command Line Basics for Beginners (freeCodeCamp)](https://www.youtube.com/watch?v=mABpAI-pCw0) — a visual walkthrough of navigating folders and core commands
 
 ---
 
@@ -178,6 +186,11 @@ git revert <commit-hash>            # create a new commit that undoes a previous
 - Make at least three separate commits, each with a clear message, as you make small changes
 - Create a GitHub repository and push your project to it
 - Create a branch, make one change on it, and merge it back into `main`
+
+### Resources for Module 3.3
+- Website: [Git Documentation](https://git-scm.com/doc) — the official reference for every command in this module
+- Website: [GitHub Docs – Hello World](https://docs.github.com/en/get-started/quickstart/hello-world) — official beginner walkthrough of creating a repository, branching, and opening a pull request
+- Video: [Git & GitHub Crash Course for Beginners (freeCodeCamp)](https://www.youtube.com/watch?v=mAFoROnOfHs) — covers this whole module in one sitting
 
 ---
 

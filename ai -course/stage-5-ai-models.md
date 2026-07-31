@@ -14,6 +14,10 @@ Example: "coding" might be one token, while "unhelpfulness" might get split into
 
 This matters for two practical reasons: models have a maximum number of tokens they can process at once, and many AI tools charge based on how many tokens you send and receive.
 
+![Text shown as small token puzzle pieces that fit together](assets/tokens_as_puzzle_pieces.png)
+
+*A model reads text as tokens: the small word and word-fragment pieces it was trained on.*
+
 ### Lesson 2: What context is, and why it runs out
 
 Context is everything the model can currently "see": your conversation so far, any files you've shared, any instructions given earlier. This is measured in tokens too, and every model has a limit called a context window.
@@ -21,6 +25,10 @@ Context is everything the model can currently "see": your conversation so far, a
 Once a conversation or a task gets long enough, older parts can fall outside that window and the model stops being able to reference them, even though they were mentioned earlier. This is why an AI coding tool can seem to "forget" something you told it ten minutes ago in a long session. It hasn't gotten worse at the task. It's run out of room to hold everything at once.
 
 Practical takeaway: for long coding sessions, periodically restate anything important instead of assuming the model still has it in view.
+
+![A context window holding recent messages while older ones fall outside its limit](assets/context_window_illustrated.png)
+
+*The context window holds what the model can currently see. Older parts fall out as it fills up.*
 
 ### Lesson 3: What a model can and can't know about your project
 
@@ -30,7 +38,7 @@ This is why vague requests like "fix my app" produce weak results. The model isn
 
 ### Resources for Module 5.1
 - Website: [Anthropic – Understanding tokens and context](https://docs.claude.com) — official documentation on how Claude models process input, worth searching for the current tokens and context pages directly
-- Video: [Understanding Tokens in AI, explained simply](https://www.youtube.com/results?search_query=what+is+a+token+in+ai+explained) — search this term for an up-to-date beginner explanation, since specific videos on this topic age quickly as models change
+- Video: [What is an AI Token? LLM Tokens Explained for Beginners (2026)](https://www.youtube.com/watch?v=EINnWUBzjvM) — a current beginner explanation of how models count and process tokens
 
 ---
 
@@ -47,6 +55,10 @@ Vague: "Make my website better."
 Specific: "The navigation menu on my homepage doesn't collapse into a hamburger icon on mobile screens under 500px wide. Fix the CSS so it does, without changing how it looks on desktop."
 
 The second version tells the model exactly what's wrong, where, and what should stay the same. The first forces the model to guess what "better" means, and it will guess, often incorrectly.
+
+![A vague prompt giving a blurry result versus a specific prompt giving a sharp one](assets/vague_vs_specific_prompting.png)
+
+*The clearer the prompt, the closer the result is to what you actually wanted.*
 
 ### Lesson 3: Giving the model the right context
 

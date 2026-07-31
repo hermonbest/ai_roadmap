@@ -44,6 +44,10 @@ For a website, this can mean two different things:
 
 You'll do both in this course. Neither is complicated once you've done it a few times. The first time always feels awkward. That's normal, not a sign you're behind.
 
+### Resources for Module 1.1
+- Website: [MDN – Getting started with the web](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web) — a beginner overview of HTML, CSS, and JavaScript and how they work together
+- Video: [How the Internet Works (Explained Simply)](https://www.youtube.com/watch?v=GKZuKr3XqJg) — a short, current visual walkthrough of how the internet works
+
 ---
 
 ## Module 1.2 — How the internet delivers a website
@@ -79,6 +83,11 @@ Three terms that get thrown around before anyone explains them:
 
 You'll go through this process yourself in Stage 7, once there's a real project to deploy.
 
+### Resources for Module 1.2
+- Website: [Cloudflare Learning Center – What is a domain name](https://www.cloudflare.com/learning/dns/glossary/what-is-a-domain-name/) — a plain explanation of domains, separate from hosting
+- Website: [Cloudflare Learning Center – What is web hosting](https://www.cloudflare.com/learning/cdn/glossary/web-hosting/) — covers hosting and how it differs from deployment
+- Video: [The Web: How Client-Server Models Work](https://www.youtube.com/watch?v=VM2Wjs9CsIU) — a visual version of Lesson 1
+
 ---
 
 ## Module 1.3 — Setting expectations
@@ -103,6 +112,10 @@ A few habits that make a real difference:
 - Do the projects at the end of each module before moving on, even if they feel small.
 - If a concept doesn't make sense, keep moving and come back to it after the next lesson. A lot of things click retroactively once you've seen how they're used.
 - Expect to be confused sometimes. Confusion while learning to code is not a sign you're bad at it. It's just what learning a new system feels like from the inside.
+
+### Resources for Module 1.3
+- Website: [freeCodeCamp – Learn to Code: A Guide for Complete Beginners](https://www.freecodecamp.org/news/learn-to-code-where-to-start/) — general guidance on pacing and expectations for self-taught beginners
+- Video: [Coding for Beginners: How Long Does It REALLY Take to Learn?](https://www.youtube.com/watch?v=e9aRBO3vcKo) — beginner-focused perspectives on realistic expectations
 
 ---
 

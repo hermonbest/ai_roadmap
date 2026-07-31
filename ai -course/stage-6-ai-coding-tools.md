@@ -28,7 +28,7 @@ Larger task (add a full feature, set up a new part of the project): an agentic w
 
 ### Resources for Module 6.1
 - Website: [Cursor vs Claude Code comparison](https://www.developersdigest.tech/blog/what-is-cursor-ai-code-editor-2026) — a current side-by-side of the two tools' approaches
-- Video: search "Cursor vs Claude Code 2026" on YouTube for an up-to-date comparison, since new releases from both tools come out often enough that a single fixed video ages quickly
+- Video: [Cursor AI vs Claude Code (2026) - Which Coding AI Is Better?](https://www.youtube.com/watch?v=av_2g0SY2OE) — a current side-by-side comparison, though new releases from both tools may date it over time
 
 ---
 
@@ -63,7 +63,7 @@ This review step is the difference between using Cursor to move faster and using
 
 ### Resources for Module 6.2
 - Website: [Cursor documentation](https://cursor.com) — check the docs section on the official site for the current setup and feature list
-- Video: search "Cursor tutorial for beginners" on YouTube, filtered to the most recent upload, for a current walkthrough of the interface
+- Video: [How To Use Cursor AI (Full Tutorial For Beginners 2025)](https://www.youtube.com/watch?v=cE84Q5IRR6U) — a full walkthrough of the interface, features, and AI workflows
 
 ---
 
@@ -94,7 +94,7 @@ If something's wrong, tell it specifically what's wrong, the same way you practi
 
 ### Resources for Module 6.3
 - Website: [Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview) — official docs, kept current with each release
-- Video: search "Claude Code tutorial for beginners" on YouTube for a current walkthrough, since command names and features get added over time
+- Video: [FULL Claude Code Tutorial for Beginners in 2026! (Step-By-Step)](https://www.youtube.com/watch?v=qYqIhX9hTQk) — a current walkthrough from setup to your first real task
 
 ---
 

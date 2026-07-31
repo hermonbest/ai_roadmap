@@ -21,6 +21,14 @@
   --text-muted: #9CA3AF;
   --text-dim: #6B7280;
   
+  /* Illustration SVG tokens (used by assets/ SVG diagrams) */
+  --t: #E5E7EB;
+  --surface-0: #0B0F19;
+  --surface-1: #111827;
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --text-secondary: #9CA3AF;
+  --text-warning: #F59E0B;
+  
   /* Typography */
   --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -853,3 +861,64 @@ pre code {
   background: var(--secondary-accent);
   box-shadow: 0 0 10px var(--primary-glow);
 }
+
+/* ============ Lesson Illustrations & SVG Support ============ */
+
+.lesson-illustration {
+  margin: 1.5rem 0 1.75rem;
+}
+
+.lesson-illustration figure {
+  margin: 0;
+}
+
+.lesson-illustration img {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+}
+
+.lesson-illustration figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  max-width: 640px;
+}
+
+.interactive-visual {
+  margin: 1.5rem 0 1.75rem;
+  padding: 1rem 1.25rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: #1f1d1d;
+}
+
+.interactive-visual svg {
+  display: block;
+}
+
+.illustration-fallback {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Support classes referenced by the SVG diagrams in assets/ */
+.c-gray { fill: #374151; }
+.c-coral { fill: rgba(240, 93, 58, 0.14); }
+.th {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--t);
+}
+.ts {
+  font-family: var(--font-body);
+  font-size: 12px;
+  fill: var(--text-secondary);
+}
+.leader { stroke: var(--border-strong); }

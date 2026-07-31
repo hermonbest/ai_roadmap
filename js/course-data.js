@@ -46,6 +46,12 @@ window.COURSE_DATA = [
         lessons: [
           {
             title: "Lesson 1: What a program is",
+            illustration: {
+              type: "image",
+              src: "assets/program_as_assembly_line.png",
+              alt: "A computer program shown as an assembly line of numbered instruction steps",
+              caption: "A program is a sequence of steps executed in order, one after another, like an assembly line."
+            },
             content: `A program is a list of instructions a computer follows, in order, one at a time.
 
 That's it. Nothing mystical about it. If you've ever followed a recipe, you've already done the human version: step 1, then step 2, then step 3, in a specific sequence, where skipping a step or doing them out of order breaks the result.
@@ -62,6 +68,82 @@ Every app you use, from a calculator to a banking app, is built from instruction
           },
           {
             title: "Lesson 2: What a website is made of",
+            illustration: {
+              type: "interactive",
+              html: `<style>
+@keyframes glow { 0%,100%{opacity:.55} 50%{opacity:.9} }
+#bulb-glow.on { animation: glow 2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { #bulb-glow.on { animation: none; opacity: .75; } }
+.toggle-track { position:relative; width:38px; height:20px; background:var(--border-strong); border-radius:10px; transition:background .2s; display:inline-block; cursor:pointer; }
+.toggle-track:has(input:checked) { background:var(--text-warning); }
+.toggle-knob { position:absolute; top:2px; left:2px; width:16px; height:16px; background:#fff; border-radius:50%; transition:transform .2s; pointer-events:none; }
+#light-toggle:checked ~ .toggle-knob { transform:translateX(18px); }
+</style>
+<svg width="100%" viewBox="0 0 680 460" role="img">
+<title>A house as an analogy for HTML, CSS, and JavaScript</title>
+<desc>A house where the exposed wooden frame is HTML structure, the brick and windows are CSS styling, and a wired light bulb controlled by a switch is JavaScript behavior.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+
+<polygon points="340,70 195,190 485,190" fill="none" stroke="var(--t)" stroke-width="1.5"/>
+<line x1="340" y1="70" x2="220" y2="172" stroke="var(--t)" stroke-width="0.5" opacity="0.4"/>
+<line x1="340" y1="70" x2="255" y2="182" stroke="var(--t)" stroke-width="0.5" opacity="0.4"/>
+<line x1="340" y1="70" x2="460" y2="182" stroke="var(--t)" stroke-width="0.5" opacity="0.4"/>
+<line x1="340" y1="70" x2="425" y2="172" stroke="var(--t)" stroke-width="0.5" opacity="0.4"/>
+
+<rect x="200" y="190" width="140" height="210" fill="none" stroke="var(--t)" stroke-width="1.5"/>
+<line x1="225" y1="195" x2="225" y2="395" stroke="var(--t)" stroke-width="1" opacity="0.55"/>
+<line x1="255" y1="195" x2="255" y2="395" stroke="var(--t)" stroke-width="1" opacity="0.55"/>
+<line x1="285" y1="195" x2="285" y2="395" stroke="var(--t)" stroke-width="1" opacity="0.55"/>
+<line x1="315" y1="195" x2="315" y2="395" stroke="var(--t)" stroke-width="1" opacity="0.55"/>
+<line x1="200" y1="290" x2="340" y2="290" stroke="var(--t)" stroke-width="1" opacity="0.55"/>
+<line x1="225" y1="195" x2="255" y2="290" stroke="var(--t)" stroke-width="0.5" opacity="0.35"/>
+<line x1="255" y1="195" x2="225" y2="290" stroke="var(--t)" stroke-width="0.5" opacity="0.35"/>
+
+<g class="c-coral"><rect x="340" y="190" width="140" height="210" stroke-width="1.5"/></g>
+<g opacity="0.6">
+<rect x="348" y="198" width="26" height="12" fill="#D85A30"/><rect x="378" y="198" width="26" height="12" fill="#F0997B"/><rect x="408" y="198" width="26" height="12" fill="#D85A30"/><rect x="438" y="198" width="26" height="12" fill="#F0997B"/>
+<rect x="362" y="210" width="26" height="12" fill="#F0997B"/><rect x="392" y="210" width="26" height="12" fill="#D85A30"/><rect x="422" y="210" width="26" height="12" fill="#F0997B"/>
+<rect x="348" y="298" width="26" height="12" fill="#D85A30"/><rect x="438" y="298" width="26" height="12" fill="#D85A30"/>
+<rect x="362" y="310" width="26" height="12" fill="#F0997B"/><rect x="422" y="310" width="26" height="12" fill="#F0997B"/>
+</g>
+<rect x="375" y="330" width="40" height="70" fill="var(--surface-1)" stroke="var(--t)" stroke-width="1"/>
+<rect id="window" x="358" y="228" width="60" height="50" rx="2" fill="var(--surface-0)" stroke="var(--t)" stroke-width="1"/>
+<line x1="388" y1="228" x2="388" y2="278" stroke="var(--t)" stroke-width="0.5"/>
+<line x1="358" y1="253" x2="418" y2="253" stroke="var(--t)" stroke-width="0.5"/>
+
+<rect x="190" y="400" width="300" height="16" fill="none" stroke="var(--t)" stroke-width="1.5"/>
+
+<circle id="bulb-glow" class="off" cx="340" cy="55" r="20" fill="#F2A623" opacity="0"/>
+<circle id="bulb" cx="340" cy="55" r="13" fill="var(--surface-1)" stroke="var(--t)" stroke-width="1"/>
+<line x1="340" y1="68" x2="340" y2="150" id="wire1" stroke="var(--t)" stroke-width="1"/>
+<line x1="340" y1="150" x2="460" y2="150" id="wire2" stroke="var(--t)" stroke-width="1"/>
+<line x1="460" y1="150" x2="460" y2="330" id="wire3" stroke="var(--t)" stroke-width="1"/>
+<rect x="448" y="330" width="24" height="16" rx="2" fill="none" stroke="var(--t)" stroke-width="1"/>
+
+<line class="leader" x1="260" y1="290" x2="90" y2="220"/><circle cx="260" cy="290" r="2" fill="var(--t)"/>
+<text class="th" x="40" y="210" text-anchor="start">Frame</text>
+<text class="ts" x="40" y="228" text-anchor="start">HTML — structure</text>
+
+<line class="leader" x1="410" y1="290" x2="590" y2="230"/><circle cx="410" cy="290" r="2" fill="var(--t)"/>
+<text class="th" x="595" y="220" text-anchor="start">Brick and windows</text>
+<text class="ts" x="595" y="238" text-anchor="start">CSS — style</text>
+
+<line class="leader" x1="352" y1="60" x2="590" y2="90"/><circle cx="352" cy="60" r="2" fill="var(--t)"/>
+<text class="th" x="595" y="80" text-anchor="start">Light and switch</text>
+<text class="ts" x="595" y="98" text-anchor="start">JavaScript — behavior</text>
+</svg>
+<div style="display:flex; align-items:center; gap:10px; margin-top:12px; font-size:13px; color:var(--text-secondary);">
+  <label class="toggle-track">
+    <input type="checkbox" id="light-toggle" style="position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;margin:0">
+    <span class="toggle-knob"></span>
+  </label>
+  <span>Flip the switch — that click is JavaScript at work</span>
+</div>`,
+              alt: "A house analogy for HTML, CSS, and JavaScript",
+              caption: "Flip the switch. The frame is HTML, the brick and windows are CSS, and the light is JavaScript."
+            },
             content: `A website is three things working together:
 
 - **HTML** — the content and structure (the text, images, buttons, and how they're arranged)
@@ -81,6 +163,11 @@ For a website, this can mean two different things:
 - Using a tool that starts a small local server on your computer, so the page behaves the way it will once it's live on the internet
 
 You'll do both in this course. Neither is complicated once you've done it a few times. The first time always feels awkward. That's normal, not a sign you're behind.`
+          },
+          {
+            title: "Resources for Module 1.1",
+            content: `- Website: [MDN – Getting started with the web](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web) — a beginner overview of HTML, CSS, and JavaScript and how they work together
+- Video: [How the Internet Works (Explained Simply)](https://www.youtube.com/watch?v=GKZuKr3XqJg) — a short, current visual walkthrough of how the internet works`
           }
         ]
       },
@@ -89,6 +176,64 @@ You'll do both in this course. Neither is complicated once you've done it a few 
         lessons: [
           {
             title: "Lesson 1: Client and server, explained with a real example",
+            illustration: {
+              type: "interactive",
+              html: `<style>
+@keyframes pulse { 0%,100%{opacity:.4; transform:scale(1)} 50%{opacity:1; transform:scale(1.15)} }
+.envelope { transform-origin: center; animation: pulse 1.8s ease-in-out infinite; }
+#env-response { animation-delay: .9s; }
+.led { animation: pulse 1.4s ease-in-out infinite; }
+.led:nth-child(2) { animation-delay: .3s; }
+.led:nth-child(3) { animation-delay: .6s; }
+.led:nth-child(4) { animation-delay: .9s; }
+@media (prefers-reduced-motion: reduce) { .envelope, .led { animation: none; opacity: .8; } }
+</style>
+<svg width="100%" viewBox="0 0 680 340" role="img">
+<title>Client and server shown as a browser window and a server rack</title>
+<desc>A browser window on the left sends a request to a server rack on the right, and the server rack sends back a response, shown as two small envelope icons traveling along curved paths.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+
+<rect x="40" y="140" width="180" height="130" rx="8" fill="none" stroke="var(--t)" stroke-width="1.2"/>
+<rect x="40" y="140" width="180" height="26" rx="8" class="c-gray" stroke-width="0.5"/>
+<circle cx="56" cy="153" r="4" fill="#D85A30"/><circle cx="70" cy="153" r="4" fill="#EF9F27"/><circle cx="84" cy="153" r="4" fill="#639922"/>
+<line x1="55" y1="188" x2="180" y2="188" stroke="var(--border-strong)" stroke-width="2"/>
+<line x1="55" y1="204" x2="150" y2="204" stroke="var(--border-strong)" stroke-width="2"/>
+<line x1="55" y1="220" x2="165" y2="220" stroke="var(--border-strong)" stroke-width="2"/>
+<line x1="55" y1="236" x2="120" y2="236" stroke="var(--border-strong)" stroke-width="2"/>
+<text class="th" x="130" y="303" text-anchor="middle">Client</text>
+<text class="ts" x="130" y="320" text-anchor="middle">your browser</text>
+
+<rect x="480" y="90" width="120" height="180" rx="6" fill="none" stroke="var(--t)" stroke-width="1.2"/>
+<rect x="495" y="112" width="90" height="24" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+<circle class="led" cx="580" cy="124" r="3.5" fill="#3B6D11"/>
+<rect x="495" y="146" width="90" height="24" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+<circle class="led" cx="580" cy="158" r="3.5" fill="#3B6D11"/>
+<rect x="495" y="180" width="90" height="24" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+<circle class="led" cx="580" cy="192" r="3.5" fill="#3B6D11"/>
+<rect x="495" y="214" width="90" height="24" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+<circle class="led" cx="580" cy="226" r="3.5" fill="#3B6D11"/>
+<text class="th" x="540" y="303" text-anchor="middle">Server</text>
+<text class="ts" x="540" y="320" text-anchor="middle">stores the site's files</text>
+
+<path d="M225 175 C310 130, 400 130, 475 165" fill="none" stroke="var(--t)" stroke-width="1.2" marker-end="url(#arrow)"/>
+<g class="envelope" id="env-request">
+<rect x="330" y="130" width="26" height="18" rx="2" fill="var(--surface-1)" stroke="var(--t)" stroke-width="1"/>
+<path d="M330 130 L343 143 L356 130" fill="none" stroke="var(--t)" stroke-width="1"/>
+</g>
+<text class="ts" x="343" y="118" text-anchor="middle">Request</text>
+
+<path d="M475 195 C400 240, 310 240, 225 205" fill="none" stroke="var(--t)" stroke-width="1.2" marker-end="url(#arrow)"/>
+<g class="envelope" id="env-response">
+<rect x="330" y="222" width="26" height="18" rx="2" fill="var(--surface-1)" stroke="var(--t)" stroke-width="1"/>
+<path d="M330 222 L343 235 L356 222" fill="none" stroke="var(--t)" stroke-width="1"/>
+</g>
+<text class="ts" x="343" y="258" text-anchor="middle">Response</text>
+</svg>`,
+              alt: "A browser window sending a request to a server rack, which sends back a response",
+              caption: "The client asks, the server answers. That exchange is every website visit."
+            },
             content: `When you type a web address into your browser and hit enter, here's what happens:
 
 1. Your browser (the **client**) sends a request out to the internet asking for that website.
@@ -117,6 +262,12 @@ This process happens every time you load or refresh a page. If you right-click a
 - **Deployment** — the act of putting your code onto that hosting server so it becomes a live, public website.
 
 You'll go through this process yourself in Stage 7, once there's a real project to deploy.`
+          },
+          {
+            title: "Resources for Module 1.2",
+            content: `- Website: [Cloudflare Learning Center – What is a domain name](https://www.cloudflare.com/learning/dns/glossary/what-is-a-domain-name/) — a plain explanation of domains, separate from hosting
+- Website: [Cloudflare Learning Center – What is web hosting](https://www.cloudflare.com/learning/cdn/glossary/web-hosting/) — covers hosting and how it differs from deployment
+- Video: [The Web: How Client-Server Models Work](https://www.youtube.com/watch?v=VM2Wjs9CsIU) — a visual version of Lesson 1`
           }
         ]
       },
@@ -143,6 +294,11 @@ The goal of this course isn't to make you memorize syntax. It's to make sure you
 - Do the projects at the end of each module before moving on, even if they feel small.
 - If a concept doesn't make sense, keep moving and come back to it after the next lesson. A lot of things click retroactively once you've seen how they're used.
 - Expect to be confused sometimes. Confusion while learning to code is not a sign you're bad at it. It's just what learning a new system feels like from the inside.`
+          },
+          {
+            title: "Resources for Module 1.3",
+            content: `- Website: [freeCodeCamp – Learn to Code: A Guide for Complete Beginners](https://www.freecodecamp.org/news/learn-to-code-where-to-start/) — general guidance on pacing and expectations for self-taught beginners
+- Video: [Coding for Beginners: How Long Does It REALLY Take to Learn?](https://www.youtube.com/watch?v=e9aRBO3vcKo) — beginner-focused perspectives on realistic expectations`
           }
         ]
       }
@@ -299,6 +455,11 @@ A \`<nav>\` tag tells the browser and any assistive technology "this is navigati
 - An image (any placeholder image works)
 
 Don't worry about how it looks yet. That's next.`
+          },
+          {
+            title: "Resources for Module 2.1",
+            content: `- Website: [MDN – Introduction to HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML) — the standard reference for HTML basics, with practice exercises
+- Video: [HTML Tutorial – Website Crash Course for Beginners (freeCodeCamp)](https://www.youtube.com/watch?v=916GWv2Qs08) — a good starting point for the HTML in this module`
           }
         ]
       },
@@ -307,6 +468,12 @@ Don't worry about how it looks yet. That's next.`
         lessons: [
           {
             title: "Lesson 1: Selectors and the box model",
+            illustration: {
+              type: "image",
+              src: "assets/box_model_as_picture_frame.png",
+              alt: "The CSS box model compared to a picture frame around its content",
+              caption: "Margin, border, and padding wrap around content the way a frame wraps a picture."
+            },
             content: `CSS rules follow this pattern:
 
 \`\`\`css
@@ -361,6 +528,12 @@ Create a \`style.css\` file in the same folder and start styling your profile pa
           },
           {
             title: "Lesson 3: Layout basics: flexbox",
+            illustration: {
+              type: "image",
+              src: "assets/flexbox_as_bookshelf.png",
+              alt: "Flexbox layout compared to arranging books on a shelf",
+              caption: "Flexbox arranges items in a row or column the way a bookshelf arranges books."
+            },
             content: `Flexbox is the most common way to arrange elements side by side or in a column, without fighting the browser's default layout behavior.
 
 \`\`\`css
@@ -397,6 +570,12 @@ This rule only applies when the screen is 600 pixels wide or narrower, which cov
 - Give it a font, colors, and spacing that don't look like the browser's default
 - Arrange the interests list using flexbox
 - Add a media query so the layout adjusts on a narrow screen`
+          },
+          {
+            title: "Resources for Module 2.2",
+            content: `- Website: [MDN – CSS first steps](https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps) — covers selectors, the box model, and layout basics in more depth
+- Website: [Flexbox Froggy](https://flexboxfroggy.com/) — a short interactive game for practicing flexbox
+- Video: [CSS Flexbox Crash Course (freeCodeCamp)](https://www.youtube.com/watch?v=tXIhdp5R7sc) — a visual walkthrough of Lesson 3`
           }
         ]
       },
@@ -500,6 +679,12 @@ You'll use both constantly, especially once you start working with data from a d
 - A counter that increases by one each time a button is clicked
 
 Any of these uses everything from this module: variables, a function, an event listener, and the DOM.`
+          },
+          {
+            title: "Resources for Module 2.3",
+            content: `- Website: [MDN – JavaScript first steps](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps) — covers variables, functions, and the DOM with runnable examples
+- Website: [javascript.info](https://javascript.info/) — a thorough, free, modern JavaScript tutorial for going deeper than this module
+- Video: [Learn JavaScript – Full Course for Beginners (freeCodeCamp)](https://www.youtube.com/watch?v=PkZNo7MFNFg) — covers variables, functions, arrays, and the DOM from this module`
           }
         ]
       }
@@ -587,6 +772,11 @@ These stop being "shortcuts you look up" and become automatic within a week of r
             content: `With Live Server installed, right-click your \`index.html\` file and choose "Open with Live Server." Your page opens in a browser, and any time you save a change in VS Code, the page updates automatically.
 
 For JavaScript, VS Code has a built-in debugger that lets you pause code mid-run and inspect what's happening. You'll use this more once your code gets complex enough that \`console.log\` alone isn't enough to find a bug, which comes up in Stage 4's debugging module.`
+          },
+          {
+            title: "Resources for Module 3.1",
+            content: `- Website: [VS Code Docs – Getting Started](https://code.visualstudio.com/docs) — official documentation covering the interface, extensions, and debugging
+- Video: [VS Code Tutorial – Become More Productive (freeCodeCamp)](https://www.youtube.com/watch?v=heXQnM99oAI) — a current walkthrough of the interface and extensions`
           }
         ]
       },
@@ -641,6 +831,11 @@ Error: Cannot find module 'express'
 Read the first line first. "Cannot find module 'express'" means the code is trying to use something called \`express\` that hasn't been installed. The fix, in this case, is running \`npm install express\`.
 
 Habit worth building now: read the first line of any error before scrolling through the rest.`
+          },
+          {
+            title: "Resources for Module 3.2",
+            content: `- Website: [freeCodeCamp – The Linux Commands Handbook](https://www.freecodecamp.org/news/the-linux-commands-handbook/) — covers the core commands from this module and more, at a beginner pace
+- Video: [Command Line Basics for Beginners (freeCodeCamp)](https://www.youtube.com/watch?v=mABpAI-pCw0) — a visual walkthrough of navigating folders and core commands`
           }
         ]
       },
@@ -655,6 +850,12 @@ Git is the tool that tracks this history on your computer. GitHub is a website t
           },
           {
             title: "Lesson 2: Git basics",
+            illustration: {
+              type: "image",
+              src: "assets/git_commits_as_snapshots.png",
+              alt: "Git commits shown as snapshots along a timeline",
+              caption: "Every commit is a saved snapshot of your project that you can return to."
+            },
             content: `First, tell Git who you are (one-time setup):
 
 \`\`\`bash
@@ -689,6 +890,12 @@ git push -u origin main
           },
           {
             title: "Lesson 4: Branches and pull requests",
+            illustration: {
+              type: "image",
+              src: "assets/git_branches_as_forked_road.png",
+              alt: "Git branches shown as a road forking into separate paths that rejoin",
+              caption: "Branches let work fork off the main road and merge back in later."
+            },
             content: `A branch is a separate line of work that doesn't affect the main version until you merge it in.
 
 \`\`\`bash
@@ -722,6 +929,12 @@ git revert <commit-hash>            # create a new commit that undoes a previous
 - Make at least three separate commits, each with a clear message, as you make small changes
 - Create a GitHub repository and push your project to it
 - Create a branch, make one change on it, and merge it back into \`main\``
+          },
+          {
+            title: "Resources for Module 3.3",
+            content: `- Website: [Git Documentation](https://git-scm.com/doc) — the official reference for every command in this module
+- Website: [GitHub Docs – Hello World](https://docs.github.com/en/get-started/quickstart/hello-world) — official beginner walkthrough of creating a repository, branching, and opening a pull request
+- Video: [Git & GitHub Crash Course for Beginners (freeCodeCamp)](https://www.youtube.com/watch?v=mAFoROnOfHs) — covers this whole module in one sitting`
           }
         ]
       }
@@ -777,6 +990,12 @@ git revert <commit-hash>            # create a new commit that undoes a previous
         lessons: [
           {
             title: "Lesson 1: Frontend vs backend",
+            illustration: {
+              type: "image",
+              src: "assets/frontend_backend_api_restaurant.png",
+              alt: "Frontend, backend, and API shown as a dining room, kitchen, and waiter",
+              caption: "The frontend is the dining room, the backend is the kitchen, and the API is the waiter between them."
+            },
             content: `The frontend is everything the user sees and interacts with directly: the HTML, CSS, and JavaScript running in their browser. The backend is the part running on a server, out of view, that handles data, logic, and anything that shouldn't be exposed to the user directly, like passwords or payment processing.
 
 Example: on a shopping site, the frontend shows you the product images and the "Add to Cart" button. The backend checks whether that item is actually in stock and stores your order once you check out.`
@@ -789,6 +1008,12 @@ Example: a weather app on your phone doesn't run its own weather sensors. It sen
           },
           {
             title: "Lesson 3: What a database is",
+            illustration: {
+              type: "image",
+              src: "assets/database_as_filing_cabinet.png",
+              alt: "A database compared to a filing cabinet of organized records",
+              caption: "A database organizes data into queryable records the way a filing cabinet organizes files."
+            },
             content: `A database is a structured place to store data so it can be saved, searched, and updated reliably. Instead of storing a user's information in a plain text file, a database organizes it into tables (or similar structures) that can be queried directly, like "find every user who signed up this week."`
           },
           {
@@ -809,6 +1034,12 @@ Each has trade-offs: server-side rendering tends to show content faster on first
         lessons: [
           {
             title: "Lesson 1: Authentication (proving who you are)",
+            illustration: {
+              type: "image",
+              src: "assets/authentication_vs_authorization_illustrated.png",
+              alt: "Authentication versus authorization, contrasting proving identity with granting permission",
+              caption: "Authentication proves who you are; authorization decides what you can do."
+            },
             content: `Authentication is the process of verifying identity: confirming that you are who you say you are. The most common form is a username and password, though fingerprint scans, face recognition, and one-time codes sent by text are all forms of authentication too.`
           },
           {
@@ -819,6 +1050,12 @@ A simple way to keep the two straight: authentication answers "who are you," aut
           },
           {
             title: "Lesson 3: Sessions, tokens, and cookies",
+            illustration: {
+              type: "image",
+              src: "assets/cookies_sessions_tokens_illustrated.png",
+              alt: "Cookies, sessions, and tokens illustrated side by side",
+              caption: "Cookies and sessions remember you on the server; tokens prove who you are directly."
+            },
             content: `Once you log in, the app needs a way to remember you're logged in as you move between pages, since each request to a server is otherwise treated as brand new.
 
 - A **cookie** is a small piece of data stored in your browser and sent along with each request.
@@ -848,6 +1085,12 @@ None of these need to be fully understood yet. Knowing they exist is enough at t
         lessons: [
           {
             title: "Lesson 1: UI (what the user sees)",
+            illustration: {
+              type: "image",
+              src: "assets/ui_vs_ux_illustrated.png",
+              alt: "UI versus UX, contrasting visual design with overall experience",
+              caption: "UI is what you see; UX is how it feels to use."
+            },
             content: `UI (User Interface) is the visual layer: buttons, colors, fonts, spacing, icons. It's the part of a product you can point at and describe by appearance.`
           },
           {
@@ -870,6 +1113,12 @@ None of these need to be fully understood yet. Knowing they exist is enough at t
         lessons: [
           {
             title: "Lesson 1: What debugging actually is",
+            illustration: {
+              type: "image",
+              src: "assets/debugging_illustrated.png",
+              alt: "The debugging loop illustrated as notice, narrow down, guess, and test",
+              caption: "Debugging is a repeatable loop: notice, narrow down, guess, test."
+            },
             content: `Debugging is the process of finding out why code isn't doing what you expected, then fixing it. It's not a special skill some people have and others don't. It's a repeatable process: notice something's wrong, narrow down where, form a guess, test the guess, repeat.`
           },
           {
@@ -953,6 +1202,12 @@ A breakpoint, set in VS Code or a browser's developer tools, pauses code executi
         lessons: [
           {
             title: "Lesson 1: What a token is",
+            illustration: {
+              type: "image",
+              src: "assets/tokens_as_puzzle_pieces.png",
+              alt: "Text shown as small token puzzle pieces that fit together",
+              caption: "A model reads text as tokens: the small word and word-fragment pieces it was trained on."
+            },
             content: `A token is the unit of text an AI model actually reads. It's not always a full word. Common words are often a single token, while longer or less common words get split into pieces.
 
 Example: "coding" might be one token, while "unhelpfulness" might get split into pieces like "un," "help," "ful," "ness."
@@ -961,6 +1216,12 @@ This matters for two practical reasons: models have a maximum number of tokens t
           },
           {
             title: "Lesson 2: What context is, and why it runs out",
+            illustration: {
+              type: "image",
+              src: "assets/context_window_illustrated.png",
+              alt: "A context window holding recent messages while older ones fall outside its limit",
+              caption: "The context window holds what the model can currently see. Older parts fall out as it fills up."
+            },
             content: `Context is everything the model can currently "see": your conversation so far, any files you've shared, any instructions given earlier. This is measured in tokens too, and every model has a limit called a context window.
 
 Once a conversation or a task gets long enough, older parts can fall outside that window and the model stops being able to reference them, even though they were mentioned earlier. This is why an AI coding tool can seem to "forget" something you told it ten minutes ago in a long session. It hasn't gotten worse at the task. It's run out of room to hold everything at once.
@@ -976,7 +1237,7 @@ This is why vague requests like "fix my app" produce weak results. The model isn
           {
             title: "Resources for Module 5.1",
             content: `- Website: [Anthropic – Understanding tokens and context](https://docs.claude.com) — official documentation on how Claude models process input, worth searching for the current tokens and context pages directly
-- Video: [Understanding Tokens in AI, explained simply](https://www.youtube.com/results?search_query=what+is+a+token+in+ai+explained) — search this term for an up-to-date beginner explanation, since specific videos on this topic age quickly as models change`
+- Video: [What is an AI Token? LLM Tokens Explained for Beginners (2026)](https://www.youtube.com/watch?v=EINnWUBzjvM) — a current beginner explanation of how models count and process tokens`
           }
         ]
       },
@@ -989,6 +1250,12 @@ This is why vague requests like "fix my app" produce weak results. The model isn
           },
           {
             title: "Lesson 2: Vague prompt vs specific prompt",
+            illustration: {
+              type: "image",
+              src: "assets/vague_vs_specific_prompting.png",
+              alt: "A vague prompt giving a blurry result versus a specific prompt giving a sharp one",
+              caption: "The clearer the prompt, the closer the result is to what you actually wanted."
+            },
             content: `Vague: "Make my website better."
 
 Specific: "The navigation menu on my homepage doesn't collapse into a hamburger icon on mobile screens under 500px wide. Fix the CSS so it does, without changing how it looks on desktop."
@@ -1091,7 +1358,7 @@ Larger task (add a full feature, set up a new part of the project): an agentic w
           {
             title: "Resources for Module 6.1",
             content: `- Website: [Cursor vs Claude Code comparison](https://www.developersdigest.tech/blog/what-is-cursor-ai-code-editor-2026) — a current side-by-side of the two tools' approaches
-- Video: search "Cursor vs Claude Code 2026" on YouTube for an up-to-date comparison, since new releases from both tools come out often enough that a single fixed video ages quickly`
+- Video: [Cursor AI vs Claude Code (2026) - Which Coding AI Is Better?](https://www.youtube.com/watch?v=av_2g0SY2OE) — a current side-by-side comparison, though new releases from both tools may date it over time`
           }
         ]
       },
@@ -1128,7 +1395,7 @@ This review step is the difference between using Cursor to move faster and using
           {
             title: "Resources for Module 6.2",
             content: `- Website: [Cursor documentation](https://cursor.com) — check the docs section on the official site for the current setup and feature list
-- Video: search "Cursor tutorial for beginners" on YouTube, filtered to the most recent upload, for a current walkthrough of the interface`
+- Video: [How To Use Cursor AI (Full Tutorial For Beginners 2025)](https://www.youtube.com/watch?v=cE84Q5IRR6U) — a full walkthrough of the interface, features, and AI workflows`
           }
         ]
       },
@@ -1161,7 +1428,7 @@ If something's wrong, tell it specifically what's wrong, the same way you practi
           {
             title: "Resources for Module 6.3",
             content: `- Website: [Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview) — official docs, kept current with each release
-- Video: search "Claude Code tutorial for beginners" on YouTube for a current walkthrough, since command names and features get added over time`
+- Video: [FULL Claude Code Tutorial for Beginners in 2026! (Step-By-Step)](https://www.youtube.com/watch?v=qYqIhX9hTQk) — a current walkthrough from setup to your first real task`
           }
         ]
       },
@@ -1279,7 +1546,7 @@ Once deployed, you have a live, working URL you can share with anyone.`
             title: "Resources for Project A",
             content: `- Website: [Supabase documentation](https://supabase.com/docs) — a common starting point for beginners needing a database and authentication without building a backend from scratch
 - Website: [Vercel deployment guide](https://vercel.com/docs) — straightforward deployment docs, connects directly to a GitHub repository
-- Video: search "build and deploy a full stack app with Supabase" on YouTube for a current, complete walkthrough matching this exact stack`
+- Video: [Supabase Full Project - The FASTEST Way to Ship a SaaS App?](https://www.youtube.com/watch?v=Q4rXmxQ1AUM) — builds and deploys a full-stack app with Supabase and Next.js, matching this exact stack`
           }
         ]
       },
@@ -1297,6 +1564,12 @@ Once deployed, you have a live, working URL you can share with anyone.`
           {
             title: "Lesson 3: Staying current without getting overwhelmed",
             content: `New tools and frameworks appear constantly, and no one keeps up with all of them. Pick a small number of reliable sources (one newsletter, one YouTube channel, one community) instead of trying to track everything. The fundamentals from Stages 1 through 4 change slowly. The tools on top of them change fast. Knowing the difference keeps new releases from feeling like you're starting over each time.`
+          },
+          {
+            title: "Resources for the Closing Module",
+            content: `- Website: [GitHub Explore](https://github.com/explore) — a starting point for finding open-source projects to read, organized by topic and language
+- Website: [freeCodeCamp News](https://www.freecodecamp.org/news/) — a steady source of beginner-to-intermediate articles for staying current without chasing every new tool
+- Video: [How to Read Other People's Code | Beginner Developer Skill](https://www.youtube.com/watch?v=5N98tJyrqGc) — approaches to Lesson 2`
           }
         ]
       }

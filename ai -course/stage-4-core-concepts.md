@@ -12,6 +12,10 @@ The frontend is everything the user sees and interacts with directly: the HTML, 
 
 Example: on a shopping site, the frontend shows you the product images and the "Add to Cart" button. The backend checks whether that item is actually in stock and stores your order once you check out.
 
+![Frontend, backend, and API shown as a dining room, kitchen, and waiter](assets/frontend_backend_api_restaurant.png)
+
+*The frontend is the dining room, the backend is the kitchen, and the API is the waiter between them.*
+
 ### Lesson 2: What an API is
 
 An API (Application Programming Interface) is a defined way for one piece of software to ask another piece of software for something, without needing to know how that other software works internally.
@@ -21,6 +25,10 @@ Example: a weather app on your phone doesn't run its own weather sensors. It sen
 ### Lesson 3: What a database is
 
 A database is a structured place to store data so it can be saved, searched, and updated reliably. Instead of storing a user's information in a plain text file, a database organizes it into tables (or similar structures) that can be queried directly, like "find every user who signed up this week."
+
+![A database compared to a filing cabinet of organized records](assets/database_as_filing_cabinet.png)
+
+*A database organizes data into queryable records the way a filing cabinet organizes files.*
 
 ### Lesson 4: Client-side vs server-side rendering
 
@@ -40,6 +48,10 @@ Each has trade-offs: server-side rendering tends to show content faster on first
 
 Authentication is the process of verifying identity: confirming that you are who you say you are. The most common form is a username and password, though fingerprint scans, face recognition, and one-time codes sent by text are all forms of authentication too.
 
+![Authentication versus authorization, contrasting proving identity with granting permission](assets/authentication_vs_authorization_illustrated.png)
+
+*Authentication proves who you are; authorization decides what you can do.*
+
 ### Lesson 2: Authorization (what you're allowed to do)
 
 Authorization happens after authentication, and decides what you're allowed to access or do. Two people can log into the same app (both authenticated) but have completely different permissions (different authorization): one might be able to view a shared document, the other might be able to edit it.
@@ -55,6 +67,10 @@ Once you log in, the app needs a way to remember you're logged in as you move be
 - A **token** (commonly a JWT, JSON Web Token) is a self-contained piece of data that proves who you are without the server needing to store a session at all. It's checked and trusted directly.
 
 Which approach a project uses depends on its scale and needs. You'll encounter both.
+
+![Cookies, sessions, and tokens illustrated side by side](assets/cookies_sessions_tokens_illustrated.png)
+
+*Cookies and sessions remember you on the server; tokens prove who you are directly.*
 
 ### Lesson 4: Common security mistakes beginners make
 
@@ -77,6 +93,10 @@ None of these need to be fully understood yet. Knowing they exist is enough at t
 
 UI (User Interface) is the visual layer: buttons, colors, fonts, spacing, icons. It's the part of a product you can point at and describe by appearance.
 
+![UI versus UX, contrasting visual design with overall experience](assets/ui_vs_ux_illustrated.png)
+
+*UI is what you see; UX is how it feels to use.*
+
 ### Lesson 2: UX (how the user experiences it)
 
 UX (User Experience) is broader: how easy the product is to use, how it feels to accomplish a task, whether the user finds what they need without frustration. Two apps can have identical buttons and colors (same UI) and completely different UX, if one makes a task take three clicks and the other makes it take twelve.
@@ -96,6 +116,10 @@ A well-designed button (good UI) placed somewhere the user never looks (bad UX) 
 ### Lesson 1: What debugging actually is
 
 Debugging is the process of finding out why code isn't doing what you expected, then fixing it. It's not a special skill some people have and others don't. It's a repeatable process: notice something's wrong, narrow down where, form a guess, test the guess, repeat.
+
+![The debugging loop illustrated as notice, narrow down, guess, and test](assets/debugging_illustrated.png)
+
+*Debugging is a repeatable loop: notice, narrow down, guess, test.*
 
 ### Lesson 2: Reading a stack trace
 
