@@ -248,7 +248,16 @@ document.addEventListener("DOMContentLoaded", () => {
     renderQuiz(stage);
 
     // Scroll to top
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollToTop();
+  }
+
+  // Resets the page to the top. On this layout, <body> (not the window or
+  // <html>) is the actual scroll container because body's overflow-x: hidden
+  // makes its overflow-y compute to auto, so scroll body directly.
+  function scrollToTop() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    window.scrollTo(0, 0);
   }
 
   // Wire the interactive house-light toggle. The SVG markup is injected via
@@ -316,6 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function switchStage(stageId) {
+    scrollToTop();
     renderStage(stageId);
   }
 
