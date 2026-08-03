@@ -7,13 +7,14 @@
   <meta name="description" content="An interactive, high-performance web course guiding you from zero coding knowledge to building and deploying full-stack apps with AI coding tools.">
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self';
+    script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
     frame-src https://www.youtube.com https://www.youtube-nocookie.com;
     img-src 'self' data: https:;
-    connect-src 'self';
+    connect-src 'self' https://generativelanguage.googleapis.com;
   ">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
   <link rel="stylesheet" href="styles.css">
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -22,14 +23,72 @@
 </head>
 <body>
 
+  <!-- Welcome Overlay (shown on first visit) -->
+  <div class="welcome-overlay" id="welcome-overlay">
+    <div class="welcome-card">
+      <div class="welcome-badge">INTERACTIVE COURSE</div>
+      <h1 class="welcome-title">AI-Powered Coding Roadmap</h1>
+      <p class="welcome-subtitle">Go from zero coding knowledge to building and deploying a full-stack app — with AI tools guiding you every step of the way.</p>
+      <div class="welcome-features">
+        <div class="welcome-feature-item">
+          <span class="welcome-feature-icon">🎯</span>
+          <div>
+            <strong>7 Hands-On Stages</strong>
+            <p>From HTML basics to deploying a live app</p>
+          </div>
+        </div>
+        <div class="welcome-feature-item">
+          <span class="welcome-feature-icon">🧪</span>
+          <div>
+            <strong>Interactive Labs</strong>
+            <p>Simulators, sandboxes, and live code editors</p>
+          </div>
+        </div>
+        <div class="welcome-feature-item">
+          <span class="welcome-feature-icon">🤖</span>
+          <div>
+            <strong>AI Tutor</strong>
+            <p>Ask questions anytime and get instant help</p>
+          </div>
+        </div>
+        <div class="welcome-feature-item">
+          <span class="welcome-feature-icon">📊</span>
+          <div>
+            <strong>Track Progress</strong>
+            <p>Quizzes, bookmarks, and completion tracking</p>
+          </div>
+        </div>
+      </div>
+      <button class="welcome-start-btn" id="welcome-start-btn">Start Learning →</button>
+      <p class="welcome-note">Your progress is saved automatically in your browser.</p>
+    </div>
+  </div>
+
   <!-- Top Navigation Header -->
   <header class="top-nav">
-    <a href="#" class="brand">
-      <span class="brand-badge">COURSE</span>
-      <span>AI-Powered Coding Roadmap</span>
-    </a>
+    <div class="nav-left">
+      <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle sidebar menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <a href="#" class="brand">
+        <span class="brand-badge">COURSE</span>
+        <span class="brand-text">AI-Powered Coding Roadmap</span>
+      </a>
+    </div>
     
     <div class="nav-actions">
+      <div class="progress-ring-container" id="progress-ring-container" title="Course progress">
+        <svg class="progress-ring" width="36" height="36">
+          <circle class="progress-ring-bg" cx="18" cy="18" r="14" />
+          <circle class="progress-ring-fill" id="progress-ring-fill" cx="18" cy="18" r="14" />
+        </svg>
+        <span class="progress-ring-text" id="progress-ring-text">0%</span>
+      </div>
+      <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+        <span class="theme-icon" id="theme-icon">🌙</span>
+      </button>
       <button class="search-trigger-btn" id="search-trigger-btn">
         <span>🔍 Search topics...</span>
         <span class="kbd-shortcut">Ctrl K</span>
@@ -41,10 +100,23 @@
   <div class="app-container">
     
     <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-      <div class="sidebar-title">Course Roadmap Stages</div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Course Roadmap Stages</div>
+        <div class="sidebar-progress-bar">
+          <div class="sidebar-progress-fill" id="sidebar-progress-fill"></div>
+        </div>
+        <div class="sidebar-progress-label" id="sidebar-progress-label">0 of 7 stages complete</div>
+      </div>
       <div id="stage-nav-list"></div>
+      <div class="sidebar-footer">
+        <button class="sidebar-bookmarks-btn" id="sidebar-bookmarks-btn">🔖 Bookmarks</button>
+        <button class="sidebar-reset-btn" id="sidebar-reset-btn">↺ Reset Progress</button>
+      </div>
     </aside>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <!-- Main Content Viewport -->
     <main class="main-viewport" id="main-viewport"></main>

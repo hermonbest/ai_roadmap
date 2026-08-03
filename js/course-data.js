@@ -38,6 +38,17 @@ window.COURSE_DATA = [
         ],
         answer: 1,
         explanation: "Clients (like your browser) request content; servers host and deliver files to clients."
+      },
+      {
+        question: "What does 'deployment' mean in web development?",
+        options: [
+          "Writing the first line of code",
+          "Putting your code onto a hosting server so it becomes a live website",
+          "Deleting old files from your computer",
+          "Designing the visual layout of a page"
+        ],
+        answer: 1,
+        explanation: "Deployment is the act of publishing your code to a server so anyone on the internet can access it."
       }
     ],
     modules: [
@@ -310,9 +321,19 @@ The goal of this course isn't to make you memorize syntax. It's to make sure you
     title: "The Three Building Blocks",
     subtitle: "Hands-on HTML structure, CSS styling, and JavaScript interactivity",
     icon: "code",
-    widgetType: "live-sandbox",
-    widgetTitle: "Interactive Live Code Sandbox",
-    widgetDescription: "Edit HTML, CSS, and JavaScript in real-time and preview the interactive output instantly.",
+    widgetType: "css-playground",
+    widgetTitle: "Interactive CSS Flexbox Playground",
+    widgetDescription: "Experiment with flexbox properties in real-time and see how layout changes instantly.",
+    flashcardData: [
+      { term: "Element", definition: "A building block of HTML, consisting of an opening tag, content, and a closing tag." },
+      { term: "Selector", definition: "A CSS pattern that targets specific HTML elements to apply styles (e.g., h1, .class, #id)." },
+      { term: "Box Model", definition: "Every element is a box with content, padding, border, and margin layers." },
+      { term: "Flexbox", definition: "A CSS layout system for arranging items in rows or columns with flexible spacing." },
+      { term: "DOM", definition: "Document Object Model — the browser's live tree of HTML elements that JavaScript can manipulate." },
+      { term: "Event Listener", definition: "A function attached to an element that runs when a specific action (click, keypress) occurs." },
+      { term: "Variable", definition: "A named container that stores a value (let, const) for later use in code." },
+      { term: "Function", definition: "A reusable block of code that performs a specific task and can accept inputs (parameters)." }
+    ],
     quiz: [
       {
         question: "Which semantic HTML element should wrap the main navigation links of a page?",
@@ -336,6 +357,17 @@ The goal of this course isn't to make you memorize syntax. It's to make sure you
         ],
         answer: 1,
         explanation: "document.getElementById('submitBtn').addEventListener('click', handler) is the standard DOM API."
+      },
+      {
+        question: "What does the CSS property 'display: flex' do to an element?",
+        options: [
+          "Hides the element completely",
+          "Turns it into a flex container, enabling flexible layout of its children",
+          "Makes the element fixed to the top of the page",
+          "Adds a border around the element"
+        ],
+        answer: 1,
+        explanation: "display: flex creates a flex container, allowing you to arrange child elements with powerful alignment options."
       }
     ],
     modules: [
@@ -727,6 +759,17 @@ Any of these uses everything from this module: variables, a function, an event l
         ],
         answer: 1,
         explanation: "'git checkout -b <name>' creates the branch and immediately switches to it."
+      },
+      {
+        question: "What does 'git push' do?",
+        options: [
+          "Downloads the latest changes from GitHub",
+          "Creates a new branch in your repository",
+          "Uploads your local commits to the remote repository (e.g., GitHub)",
+          "Deletes the current branch"
+        ],
+        answer: 2,
+        explanation: "'git push' sends your local commits to the remote repository so others can see your work."
       }
     ],
     modules: [
@@ -946,9 +989,9 @@ git revert <commit-hash>            # create a new commit that undoes a previous
     title: "Core Concepts Every Developer Needs",
     subtitle: "Frontend vs Backend, APIs, Databases, Access & Security, Design Thinking, and Debugging",
     icon: "layers",
-    widgetType: "api-inspector",
-    widgetTitle: "Interactive API & Authentication Inspector",
-    widgetDescription: "Test HTTP requests (GET, POST), status codes, and examine Session Cookies vs JWT Auth Tokens.",
+    widgetType: "debug-challenge",
+    widgetTitle: "Interactive Debug Challenge Lab",
+    widgetDescription: "Practice finding and fixing real bugs in code snippets with hints and step-by-step solutions.",
     quiz: [
       {
         question: "What is the primary role of an API (Application Programming Interface)?",
@@ -982,6 +1025,17 @@ git revert <commit-hash>            # create a new commit that undoes a previous
         ],
         answer: 1,
         explanation: "A stack trace reveals the precise file, function line numbers, and call history where an unhandled error occurred."
+      },
+      {
+        question: "In the restaurant analogy for web development, what does the API represent?",
+        options: [
+          "The chef cooking food",
+          "The dining room where customers sit",
+          "The waiter who carries orders between the dining room and kitchen",
+          "The menu board"
+        ],
+        answer: 2,
+        explanation: "The API acts as the messenger between the frontend (dining room) and backend (kitchen), carrying requests and responses."
       }
     ],
     modules: [
@@ -1158,9 +1212,19 @@ A breakpoint, set in VS Code or a browser's developer tools, pauses code executi
     title: "Working with AI Models",
     subtitle: "Understanding tokens, context windows, and high-impact prompt engineering",
     icon: "cpu",
-    widgetType: "tokenizer-sim",
-    widgetTitle: "Interactive LLM Tokenizer & Context Simulator",
-    widgetDescription: "Type text to see token counts, cost estimations, and watch how context window limits behave.",
+    widgetType: "flashcards",
+    widgetTitle: "AI Concepts Flashcard Review",
+    widgetDescription: "Flip through key terms and definitions to reinforce what you've learned about AI models.",
+    flashcardData: [
+      { term: "Token", definition: "The atomic unit of text (word fragment) that an AI model reads and processes. Not always a full word." },
+      { term: "Context Window", definition: "The maximum number of tokens a model can hold at once. Older content drops out as it fills up." },
+      { term: "Prompt", definition: "The instruction or question you give an AI model. Its clarity directly determines output quality." },
+      { term: "Hallucination", definition: "When an AI model generates text that sounds confident but is factually incorrect or made up." },
+      { term: "Temperature", definition: "A setting that controls how random vs. predictable a model's output is. Low = focused, high = creative." },
+      { term: "Fine-tuning", definition: "Training a pre-trained model on specific data to make it better at a particular task." },
+      { term: "Embedding", definition: "A numerical representation of text that captures meaning, used for search and similarity tasks." },
+      { term: "System Prompt", definition: "Hidden instructions given to an AI model that define its behavior, tone, and constraints." }
+    ],
     quiz: [
       {
         question: "What is a 'token' in the context of Large Language Models?",
@@ -1194,6 +1258,17 @@ A breakpoint, set in VS Code or a browser's developer tools, pauses code executi
         ],
         answer: 1,
         explanation: "Specific prompts with existing code, target goals, error logs, and constraints eliminate ambiguity."
+      },
+      {
+        question: "What practical strategy helps when an AI tool gives a response that's close but not right?",
+        options: [
+          "Delete everything and start a new conversation",
+          "Tell the model specifically what's wrong rather than rewriting the entire prompt",
+          "Accept the result and fix it manually",
+          "Restart your computer"
+        ],
+        answer: 1,
+        explanation: "Iterating on the specific issue preserves the parts that already work and gets better results faster than starting over."
       }
     ],
     modules: [
@@ -1286,6 +1361,56 @@ This keeps the parts that already work while fixing exactly what doesn't, and te
 - Video: [Prompt Engineering Tutorial, freeCodeCamp](https://www.youtube.com/watch?v=_ZvnD73m40o) — full walkthrough of prompting technique with examples`
           }
         ]
+      },
+      {
+        title: "Module 5.3 — AI as a Development Partner",
+        lessons: [
+          {
+            title: "Lesson 1: When to trust AI output and when to double-check",
+            content: `AI models are excellent at pattern-matching common code patterns, boilerplate, and well-documented APIs. They're less reliable with:
+
+- Brand-new libraries or APIs released after their training cutoff
+- Complex logic that requires understanding your specific business rules
+- Security-sensitive code where a subtle mistake could create vulnerabilities
+- Edge cases that rarely appear in training data
+
+A good rule of thumb: the more critical the code, the more carefully you should review it. A CSS change to a button color needs less scrutiny than a change to your authentication logic.`
+          },
+          {
+            title: "Lesson 2: Using AI for learning, not just for production",
+            content: `One of the most underused ways to work with AI is as a learning tool, not just a code generator:
+
+- **Explain this code**: paste a piece of code you don't understand and ask the model to walk through it line by line
+- **Compare approaches**: "What are the trade-offs between using localStorage vs. IndexedDB for storing user preferences?"
+- **Generate practice problems**: "Give me 5 JavaScript exercises that practice closures and callbacks, starting easy and getting harder"
+- **Code review**: "Review this code for common beginner mistakes and suggest improvements"
+
+These uses build your understanding over time, rather than just producing code you don't fully own.`
+          },
+          {
+            title: "Lesson 3: Building a mental model of what AI can and can't do",
+            content: `Over time, you'll develop an intuition for what tasks AI excels at and where you need to step in:
+
+**AI excels at:**
+- Boilerplate and repetitive code (form validation, CSS layouts, CRUD operations)
+- Translating between formats (JSON to CSV, SQL to plain English)
+- Explaining concepts and debugging common errors
+- Generating test data and edge cases
+
+**AI struggles with:**
+- Architecture decisions that depend on your specific constraints
+- Code that must integrate with systems it can't see
+- Novel algorithms or approaches not well-represented in training data
+- Understanding the "why" behind your business requirements
+
+The goal is to develop a working relationship with AI tools where you handle the thinking and judgment, and they handle the typing and pattern-matching.`
+          },
+          {
+            title: "Resources for Module 5.3",
+            content: `- Website: [Google – Developers Blog on AI Coding](https://developers.googleblog.com) — current perspectives on working effectively alongside AI coding tools
+- Video: [How to Learn Anything with AI (2026)](https://www.youtube.com/watch?v=VXmCg7gLEnI) — techniques for using AI as a personal tutor`
+          }
+        ]
       }
     ]
   },
@@ -1331,6 +1456,17 @@ This keeps the parts that already work while fixing exactly what doesn't, and te
         ],
         answer: 1,
         explanation: "Committing prior to AI changes ensures you can easily \`git checkout\` back to working code."
+      },
+      {
+        question: "When is it typically faster to write code yourself instead of prompting an AI tool?",
+        options: [
+          "When building an entire authentication system",
+          "For a one-line fix you already know or a small tweak to something you just wrote",
+          "When refactoring 50 files at once",
+          "When generating boilerplate code"
+        ],
+        answer: 1,
+        explanation: "Simple, well-defined changes are often faster to type directly. AI tools save the most time on repetitive or larger-scope work."
       }
     ],
     modules: [
@@ -1457,9 +1593,9 @@ If something's wrong, tell it specifically what's wrong, the same way you practi
     title: "Build Something Real",
     subtitle: "Planning, constructing, authenticating, and deploying a live full-stack app",
     icon: "rocket",
-    widgetType: "architecture-blueprint",
-    widgetTitle: "Interactive Full-Stack Architecture Map",
-    widgetDescription: "Explore the live data flow between Frontend UI, Managed Database (Supabase), Auth, and Vercel hosting.",
+    widgetType: "deploy-simulator",
+    widgetTitle: "Interactive Deployment Pipeline Simulator",
+    widgetDescription: "Step through the deployment pipeline from git push to live URL and see what happens at each stage.",
     quiz: [
       {
         question: "What is the recommended first step when building a full-stack project?",
@@ -1493,6 +1629,17 @@ If something's wrong, tell it specifically what's wrong, the same way you practi
         ],
         answer: 0,
         explanation: "Vercel and Netlify auto-build and deploy static & full-stack web applications straight from GitHub commits."
+      },
+      {
+        question: "Why is it recommended to build the frontend with mock/fake data before connecting a real database?",
+        options: [
+          "Mock data makes the website faster in production",
+          "It isolates UI visual validation before introducing backend complexity",
+          "Databases don't work with HTML directly",
+          "Mock data is required by Vercel's build system"
+        ],
+        answer: 1,
+        explanation: "Prototyping with mock data allows quick iteration on UI structure and layout before wiring up backend APIs and databases."
       }
     ],
     modules: [

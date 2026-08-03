@@ -8,10 +8,24 @@
   }
 
   function parseInline(text) {
-    return text
-      .replace(/`([^`]+)`/g, "<code>$1</code>")
+    // Escape HTML inside code spans so tags display as text
+    const codeParts = [];
+    let result = text.replace(/`([^`]+)`/g, (match, code) => {
+      const idx = codeParts.length;
+      codeParts.push("<code>" + escapeHtml(code) + "</code>");
+      return `\x00C${idx}\x00`;
+    });
+
+    // Process bold and italics
+    result = result
       .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
       .replace(/\*([^*]+)\*/g, "<em>$1</em>");
+
+    // Restore code spans
+    codeParts.forEach((code, idx) => {
+      result = result.replace(`\x00C${idx}\x00`, code);
+    });
+    return result;
   }
 
   // Minimal markdown renderer (fenced code, inline code, bold, italics, lists)

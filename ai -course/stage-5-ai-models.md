@@ -84,4 +84,52 @@ This keeps the parts that already work while fixing exactly what doesn't, and te
 
 ---
 
-Stage 5 complete. You now know what's actually happening when you talk to an AI model, and how to phrase requests so it can actually help. Next: Stage 6, where you put this to work inside Cursor and Claude Code.
+## Module 5.3 — AI as a Development Partner
+
+### Lesson 1: When to trust AI output and when to double-check
+
+AI models are excellent at pattern-matching common code patterns, boilerplate, and well-documented APIs. They're less reliable with:
+
+- Brand-new libraries or APIs released after their training cutoff
+- Complex logic that requires understanding your specific business rules
+- Security-sensitive code where a subtle mistake could create vulnerabilities
+- Edge cases that rarely appear in training data
+
+A good rule of thumb: the more critical the code, the more carefully you should review it. A CSS change to a button color needs less scrutiny than a change to your authentication logic.
+
+### Lesson 2: Using AI for learning, not just for production
+
+One of the most underused ways to work with AI is as a learning tool, not just a code generator:
+
+- **Explain this code**: paste a piece of code you don't understand and ask the model to walk through it line by line
+- **Compare approaches**: "What are the trade-offs between using localStorage vs. IndexedDB for storing user preferences?"
+- **Generate practice problems**: "Give me 5 JavaScript exercises that practice closures and callbacks, starting easy and getting harder"
+- **Code review**: "Review this code for common beginner mistakes and suggest improvements"
+
+These uses build your understanding over time, rather than just producing code you don't fully own.
+
+### Lesson 3: Building a mental model of what AI can and can't do
+
+Over time, you'll develop an intuition for what tasks AI excels at and where you need to step in:
+
+**AI excels at:**
+- Boilerplate and repetitive code (form validation, CSS layouts, CRUD operations)
+- Translating between formats (JSON to CSV, SQL to plain English)
+- Explaining concepts and debugging common errors
+- Generating test data and edge cases
+
+**AI struggles with:**
+- Architecture decisions that depend on your specific constraints
+- Code that must integrate with systems it can't see
+- Novel algorithms or approaches not well-represented in training data
+- Understanding the "why" behind your business requirements
+
+The goal is to develop a working relationship with AI tools where you handle the thinking and judgment, and they handle the typing and pattern-matching.
+
+### Resources for Module 5.3
+- Website: [Google – Developers Blog on AI Coding](https://developers.googleblog.com) — current perspectives on working effectively alongside AI coding tools
+- Video: [How to Learn Anything with AI (2026)](https://www.youtube.com/watch?v=VXmCg7gLEnI) — techniques for using AI as a personal tutor
+
+---
+
+Stage 5 complete. You now know what's actually happening when you talk to an AI model, how to phrase requests effectively, and how to use AI as both a production tool and a learning partner. Next: Stage 6, where you put this to work inside Cursor and Claude Code.
