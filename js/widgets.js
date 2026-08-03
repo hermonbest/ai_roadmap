@@ -150,7 +150,7 @@ window.WIDGET_SUITE = {
   // 2b. CSS Flexbox Playground
   renderCssPlayground(el) {
     el.innerHTML = `
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <div class="widget-grid">
         <div>
           <h4 style="margin-bottom:0.75rem; color:var(--text-main);">Flexbox Controls</h4>
           <div style="margin-bottom:0.75rem;">
@@ -540,7 +540,7 @@ window.WIDGET_SUITE = {
             <button class="api-btn" id="prompt-next-btn" style="font-size:0.75rem; padding:0.3rem 0.6rem; ${currentScenario === scenarios.length - 1 ? 'opacity:0.4;cursor:default;' : ''}">Next →</button>
           </div>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div class="widget-grid">
           <div style="background:var(--bg-dark); border:1px solid #EF4444; border-radius:var(--radius-md); padding:1rem;">
             <h5 style="color:#EF4444;">❌ Vague Prompt</h5>
             <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.5rem;">"${s.vague}"</p>

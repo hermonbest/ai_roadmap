@@ -632,6 +632,12 @@ pre code {
   font-weight: 600;
 }
 
+.widget-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
 /* Quiz Section Container */
 .quiz-section {
   background: var(--bg-surface);
@@ -762,7 +768,7 @@ pre code {
   color: var(--primary-accent);
 }
 
-/* Responsive rules moved to bottom of file */
+/* Responsive rules consolidated at the bottom of the file */
 
 /* Video Embed Component Styling */
 .video-embed-card {
@@ -911,8 +917,8 @@ pre code {
 
 .chat-widget {
   position: fixed;
-  right: 1.25rem;
-  bottom: 1.25rem;
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
   z-index: 1000;
   font-family: var(--font-body);
 }
@@ -1174,11 +1180,6 @@ pre code {
   box-shadow: none;
 }
 
-@media (max-width: 480px) {
-  .chat-panel {
-    height: 70vh;
-  }
-}
 .leader { stroke: var(--border-strong); }
 
 /* ============ Welcome Overlay ============ */
@@ -1826,10 +1827,22 @@ body.light-theme .interactive-visual {
   }
   .main-viewport {
     margin-left: 0;
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem 4rem;
   }
-  .sandbox-layout, .api-inspector-grid, .tokenizer-container {
+  .sandbox-layout, .api-inspector-grid, .tokenizer-container, .widget-grid {
     grid-template-columns: 1fr;
+  }
+  .sandbox-layout {
+    height: auto;
+  }
+  .sandbox-editor {
+    min-height: 240px;
+  }
+  .sandbox-preview {
+    height: 340px;
+  }
+  .stage-hero {
+    padding: 1.5rem 1.5rem;
   }
   .brand-text {
     display: none;
@@ -1842,6 +1855,176 @@ body.light-theme .interactive-visual {
   }
   .search-trigger-btn span:first-child {
     display: none;
+  }
+}
+
+/* ============ Tablet Breakpoint (<=768px) ============ */
+
+@media (max-width: 768px) {
+  .stage-title {
+    font-size: 1.75rem;
+  }
+  .stage-subtitle {
+    font-size: 1rem;
+  }
+  .module-card, .quiz-section, .interactive-lab {
+    padding: 1.5rem;
+  }
+  .network-sim-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  .network-sim-grid .sim-node {
+    padding: 1rem;
+  }
+  .network-sim-grid .sim-pipe {
+    display: none;
+  }
+  .chat-panel {
+    width: min(440px, calc(100vw - 1.5rem));
+  }
+  .command-results {
+    max-height: 45vh;
+  }
+}
+
+/* ============ Phone Breakpoint (<=480px) ============ */
+
+@media (max-width: 480px) {
+  html, body {
+    font-size: 14px;
+  }
+  .top-nav {
+    padding: 0 0.85rem;
+  }
+  .nav-actions {
+    gap: 0.6rem;
+  }
+  .search-trigger-btn {
+    padding: 0.45rem 0.6rem;
+  }
+  .search-trigger-btn .kbd-shortcut {
+    display: none;
+  }
+  .main-viewport {
+    padding: 1rem 1rem 3.5rem;
+  }
+  .stage-hero {
+    padding: 1.25rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .stage-title {
+    font-size: 1.45rem;
+  }
+  .stage-subtitle {
+    font-size: 0.92rem;
+  }
+  .module-card {
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .module-title {
+    font-size: 1.15rem;
+  }
+  .lesson-title {
+    font-size: 1.05rem;
+  }
+  .interactive-lab, .quiz-section {
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+  .lab-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  pre {
+    font-size: 0.78rem;
+    padding: 1rem;
+  }
+  .quiz-option-btn {
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+  }
+  .sandbox-editor {
+    min-height: 220px;
+  }
+  .sandbox-preview {
+    height: 300px;
+  }
+  .flashcard-container {
+    height: 240px;
+  }
+  .stage-nav-btn {
+    padding: 0.85rem 1rem;
+  }
+  .sidebar {
+    width: min(320px, 85vw);
+  }
+  .sidebar-bookmarks-btn, .sidebar-reset-btn {
+    padding: 0.7rem 0.85rem;
+    font-size: 0.85rem;
+  }
+  .term-tooltip .tooltip-text {
+    left: 0;
+    transform: none;
+    max-width: 80vw;
+  }
+  .command-modal {
+    width: 96%;
+  }
+  .command-input, .chat-input, .sandbox-textarea {
+    font-size: 16px;
+  }
+  .welcome-title {
+    font-size: 1.6rem;
+  }
+  .welcome-subtitle {
+    font-size: 0.98rem;
+  }
+  .welcome-start-btn {
+    width: 100%;
+    max-width: 320px;
+  }
+  .welcome-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  /* Full-screen AI Tutor chat panel */
+  .chat-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+  }
+  .chat-toggle-btn {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+  .chat-input-row {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  }
+  .chat-send-btn {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  /* Full-width bookmarks panel */
+  .bookmarks-panel {
+    width: 100%;
+    border-left: none;
+  }
+  .bookmark-item {
+    padding: 0.9rem;
   }
 }
 
