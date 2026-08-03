@@ -257,6 +257,7 @@ h1, h2, h3, h4 {
   flex: 1;
   padding: 2.5rem 3rem 5rem 3rem;
   max-width: 1200px;
+  overflow-x: hidden;
 }
 
 /* Stage Hero Header */
@@ -268,6 +269,8 @@ h1, h2, h3, h4 {
   margin-bottom: 2.5rem;
   position: relative;
   overflow: hidden;
+  overflow-wrap: break-word;
+  word-break: break-word;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
@@ -299,12 +302,16 @@ h1, h2, h3, h4 {
 .stage-title {
   font-size: 2.2rem;
   margin-bottom: 0.5rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .stage-subtitle {
   color: var(--text-muted);
   font-size: 1.05rem;
   max-width: 750px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Module & Lesson Content Styles */
@@ -342,6 +349,8 @@ h1, h2, h3, h4 {
   color: var(--text-muted);
   font-size: 0.98rem;
   line-height: 1.7;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .lesson-body p {
@@ -464,6 +473,8 @@ pre code {
   color: var(--text-muted);
   font-size: 0.9rem;
   margin-bottom: 1.5rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Interactive Widget 1: Client-Server Network Simulator */
@@ -667,6 +678,8 @@ pre code {
   cursor: pointer;
   transition: var(--transition-fast);
   font-size: 0.95rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .quiz-option-btn:hover {
@@ -1038,6 +1051,8 @@ pre code {
   font-size: 0.88rem;
   line-height: 1.55;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .chat-msg p {
@@ -1204,6 +1219,7 @@ pre code {
 .welcome-card {
   text-align: center;
   max-width: 600px;
+  width: 100%;
   padding: 3rem 2.5rem;
   animation: welcome-fade-in 0.6s ease-out;
 }
@@ -1228,6 +1244,8 @@ pre code {
 .welcome-title {
   font-size: 2.5rem;
   margin-bottom: 0.75rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
   background: linear-gradient(135deg, var(--text-main), var(--secondary-accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1742,6 +1760,8 @@ body.light-theme .interactive-visual {
   color: var(--text-muted);
   font-size: 0.9rem;
   line-height: 1.6;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .challenge-hint {
