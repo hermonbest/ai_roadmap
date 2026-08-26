@@ -7,8 +7,45 @@ document.addEventListener("DOMContentLoaded", () => {
     bookmarks: JSON.parse(localStorage.getItem("ai_course_bookmarks") || "[]"),
     quizScores: JSON.parse(localStorage.getItem("ai_course_quiz_scores") || "{}"),
     theme: localStorage.getItem("ai_course_theme") || "dark",
-    welcomeSeen: localStorage.getItem("ai_course_welcome_seen") === "true"
+    welcomeSeen: localStorage.getItem("ai_course_welcome_seen") === "true",
+    activeRoadmap: localStorage.getItem("ai_course_active_roadmap") || "course",
+    lastStages: JSON.parse(localStorage.getItem("ai_course_last_stages") || "{}")
   };
+
+  // ============ Roadmap Loader & Meta ============
+  function getRoadmap() {
+    if (state.activeRoadmap === "vibe" && window.VIBE_ROADMAP) {
+      return window.VIBE_ROADMAP;
+    }
+    return { id: "course", label: "Full Course", minimal: false, stages: window.COURSE_DATA };
+  }
+
+  function isMinimalRoadmap() {
+    return getRoadmap().minimal === true;
+  }
+
+  // ============ Enrichment Layer (interactive blocks + new lessons/modules) ============
+  // Merges course-enrichment.js into COURSE_DATA exactly once, before first render.
+  let enrichmentApplied = false;
+  function applyEnrichment() {
+    if (enrichmentApplied) return;
+    const E = window.COURSE_ENRICHMENT;
+    if (E && Array.isArray(window.COURSE_DATA)) {
+      window.COURSE_DATA.forEach((stage) => {
+        const extraModules = (E.modulesByStage && E.modulesByStage[stage.id]) || [];
+        extraModules.forEach((mod) => stage.modules.push(mod));
+        stage.modules.forEach((module) => {
+          const extras = E.extraLessonsByModule && E.extraLessonsByModule[module.title];
+          if (extras) module.lessons.push(...extras);
+          module.lessons.forEach((lesson) => {
+            const blocks = E.blocksByLesson && E.blocksByLesson[lesson.title];
+            if (blocks) lesson.interactive = blocks;
+          });
+        });
+      });
+    }
+    enrichmentApplied = true;
+  }
 
   // DOM Elements
   const stageNavContainer = document.getElementById("stage-nav-list");
@@ -32,15 +69,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const welcomeStartBtn = document.getElementById("welcome-start-btn");
 
   // ============ Welcome Overlay ============
+  // The course-opening "Hello World" origin hero now IS the intro, so the
+  // one-time splash is bypassed to open straight onto it.
   function initWelcome() {
-    if (state.welcomeSeen) {
-      welcomeOverlay.classList.add("hidden");
-    }
+    welcomeOverlay.classList.add("hidden");
+    state.welcomeSeen = true;
+    localStorage.setItem("ai_course_welcome_seen", "true");
     welcomeStartBtn.addEventListener("click", () => {
       welcomeOverlay.classList.add("hidden");
       state.welcomeSeen = true;
       localStorage.setItem("ai_course_welcome_seen", "true");
     });
+    const welcomeVibeBtn = document.getElementById("welcome-vibe-btn");
+    if (welcomeVibeBtn) {
+      welcomeVibeBtn.addEventListener("click", () => {
+        switchRoadmap("vibe");
+        welcomeOverlay.classList.add("hidden");
+        state.welcomeSeen = true;
+        localStorage.setItem("ai_course_welcome_seen", "true");
+      });
+    }
     // Also close on backdrop click
     welcomeOverlay.addEventListener("click", (e) => {
       if (e.target === welcomeOverlay) {
@@ -65,17 +113,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (state.theme === "light") {
       document.body.classList.add("light-theme");
       themeIcon.textContent = "☀️";
+      themeToggleBtn.setAttribute("aria-label", "Switch to dark theme (currently light theme)");
     } else {
       document.body.classList.remove("light-theme");
       themeIcon.textContent = "🌙";
+      themeToggleBtn.setAttribute("aria-label", "Switch to light theme (currently dark theme)");
     }
   }
 
   // ============ Mobile Sidebar Toggle ============
   function initMobileSidebar() {
+    hamburgerBtn.setAttribute("aria-expanded", "false");
     hamburgerBtn.addEventListener("click", () => {
       const isOpen = sidebar.classList.toggle("mobile-open");
       hamburgerBtn.classList.toggle("active", isOpen);
+      hamburgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
     });
 
     sidebarOverlay.addEventListener("click", closeMobileSidebar);
@@ -84,11 +136,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeMobileSidebar() {
     sidebar.classList.remove("mobile-open");
     hamburgerBtn.classList.remove("active");
+    hamburgerBtn.setAttribute("aria-expanded", "false");
   }
 
   // ============ Progress Tracking ============
   function updateProgress() {
-    const total = window.COURSE_DATA.length;
+    if (isMinimalRoadmap()) return;
+    const total = getRoadmap().stages.length;
     const completed = state.completedStages.length;
     const pct = Math.round((completed / total) * 100);
 
@@ -99,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     progressRingText.textContent = pct + "%";
 
     // Sidebar progress bar
-    sidebarProgressFill.style.width = pct + "%";
+    sidebarProgressFill.style.transform = `scaleX(${pct / 100})`;
     sidebarProgressLabel.textContent = `${completed} of ${total} stages complete`;
   }
 
@@ -188,9 +242,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ============ 1. Render Sidebar Navigation ============
   function renderSidebar() {
-    stageNavContainer.innerHTML = window.COURSE_DATA.map((stage) => {
+    const roadmap = getRoadmap();
+    const titleEl = document.getElementById("sidebar-title-label");
+    if (titleEl) titleEl.textContent = roadmap.minimal ? "Vibe Coding Stages" : "Course Roadmap Stages";
+    stageNavContainer.innerHTML = roadmap.stages.map((stage) => {
       const isActive = stage.id === state.currentStageId;
-      const isCompleted = state.completedStages.includes(stage.id);
+      const isCompleted = !roadmap.minimal && state.completedStages.includes(stage.id);
 
       return `
         <div class="stage-nav-item ${isActive ? 'active' : ''}" data-stage-id="${stage.id}">
@@ -213,6 +270,20 @@ document.addEventListener("DOMContentLoaded", () => {
         closeMobileSidebar();
       });
     });
+
+    // Per-stage lesson progress counts (full roadmap only)
+    if (!roadmap.minimal) {
+      stageNavContainer.querySelectorAll(".stage-nav-item").forEach((el) => {
+        const id = el.getAttribute("data-stage-id");
+        const stage = roadmap.stages.find((s) => s.id === id);
+        if (!stage || !countLessonsDone) return;
+        const total = stage.modules.reduce((n, m) => n + m.lessons.filter(l => !/^Resources for/.test(l.title)).length, 0);
+        if (!total) return;
+        const doneCount = countLessonsDone(stage);
+        const info = el.querySelector(".stage-nav-progress");
+        if (info) info.textContent = `${doneCount}/${total} lessons · ${stage.modules.length} modules`;
+      });
+    }
   }
 
   // ============ Helper: Format Markdown Content to HTML ============
@@ -313,8 +384,16 @@ document.addEventListener("DOMContentLoaded", () => {
     processed = processed
       // Links: [text](url)
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, linkText, url) => {
+        const trimmedUrl = url.trim();
+
+        // Internal stage link: [text](#stage-id) — jumps to another stage of the active roadmap
+        if (trimmedUrl.startsWith("#")) {
+          const target = trimmedUrl.slice(1);
+          return `<a href="#${target}" class="stage-link" data-nav-stage="${target}">${linkText}</a>`;
+        }
+
         const ytWatchRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-        const ytMatch = url.match(ytWatchRegex);
+        const ytMatch = trimmedUrl.match(ytWatchRegex);
 
         if (ytMatch && ytMatch[1]) {
           const videoId = ytMatch[1];
@@ -322,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="video-embed-card">
               <div class="video-embed-header">
                 <span class="video-icon">📺</span>
-                <a href="${url}" target="_blank" rel="noopener noreferrer" class="video-link">${linkText} <span class="video-external-link">(Open on YouTube ↗)</span></a>
+                <a href="${trimmedUrl}" target="_blank" rel="noopener noreferrer" class="video-link">${linkText} <span class="video-external-link">(Open on YouTube ↗)</span></a>
               </div>
               <div class="video-body visible">
                 <div class="video-iframe-wrapper">
@@ -335,7 +414,11 @@ document.addEventListener("DOMContentLoaded", () => {
           `;
         }
 
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+        // Links whose text is a domain/path (e.g. "docs.cursor.com", "trae.ai/download")
+        // become pill-style "doc" links; plain-word links stay subtle text links.
+        const looksLikeUrl = /^[a-z0-9-]+(\.[a-z0-9-]+)+(\/\S*)?$/i.test(linkText.trim());
+        const linkClass = looksLikeUrl ? 'doc-pill' : 'text-link';
+        return `<a href="${trimmedUrl}" target="_blank" rel="noopener noreferrer" class="${linkClass}">${linkText}</a>`;
       })
       // Bold: **bold**
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
@@ -354,46 +437,162 @@ document.addEventListener("DOMContentLoaded", () => {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
+  // ============ Lesson-level progress ("Mark as learned") ============
+  function loadLessonsDone() {
+    try { return JSON.parse(localStorage.getItem("ai_course_lessons_done") || "{}"); }
+    catch { return {}; }
+  }
+  let lessonsDone = loadLessonsDone();
+
+  function isLessonDone(stageId, lessonTitle) {
+    return !!(lessonsDone[stageId] && lessonsDone[stageId][lessonTitle]);
+  }
+
+  function countLessonsDone(stage) {
+    return stage.modules.reduce((n, m) => n + m.lessons.filter(l => !/^Resources for/.test(l.title) && isLessonDone(stage.id, l.title)).length, 0);
+  }
+
+  function setLessonDone(stageId, lessonTitle, val) {
+    if (!lessonsDone[stageId]) lessonsDone[stageId] = {};
+    if (val) lessonsDone[stageId][lessonTitle] = true;
+    else delete lessonsDone[stageId][lessonTitle];
+    localStorage.setItem("ai_course_lessons_done", JSON.stringify(lessonsDone));
+    renderSidebar(); // refresh per-stage counts
+  }
+
+  // ============ Table of Contents rail with scrollspy ============
+  function buildTocRail(stage) {
+    const entries = [];
+    stage.modules.forEach((module, mi) => {
+      const lessons = module.lessons.filter(l => !/^Resources for/.test(l.title));
+      if (!lessons.length) return;
+      entries.push({ type: "module", id: `module-${mi}`, label: module.title.replace(/^Module [\d.]+ — |^Project A — |^Closing Module — |^Capstone Module — /, "") });
+      lessons.forEach((lesson, li) => {
+        entries.push({ type: "lesson", id: `lesson-${mi}-${li}`, label: lesson.title.replace(/^Lesson \d+: /, ""), hasBlocks: !!(lesson.interactive && lesson.interactive.length) });
+      });
+    });
+    if (!entries.length) return "";
+    return `
+      <nav class="toc-rail" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        ${entries.map(e => `
+          <a href="#${e.id}" class="toc-link toc-${e.type}" data-toc-target="${e.id}">
+            ${e.type === "lesson" && e.hasBlocks ? '<span class="toc-dot" title="Has an interactive exercise"></span>' : ''}
+            ${e.label}
+          </a>
+        `).join("")}
+      </nav>
+    `;
+  }
+
+  function wireTocRail() {
+    const rail = mainViewport.querySelector(".toc-rail");
+    if (!rail) return;
+    rail.querySelectorAll("[data-toc-target]").forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const target = document.getElementById(link.getAttribute("data-toc-target"));
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+    const links = Array.from(rail.querySelectorAll("[data-toc-target]"));
+    const sections = links.map(l => document.getElementById(l.getAttribute("data-toc-target"))).filter(Boolean);
+    if (!sections.length) return;
+    const observer = new IntersectionObserver((entriesList) => {
+      entriesList.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        links.forEach(l => l.classList.toggle("active", l.getAttribute("data-toc-target") === entry.target.id));
+      });
+    }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+    sections.forEach(s => observer.observe(s));
+  }
+
+  // ============ XP chip in the top nav ============
+  function syncXpChip() {
+    const chip = document.getElementById("xp-chip");
+    const chipVal = document.getElementById("xp-chip-value");
+    if (!chip || !chipVal || !window.LESSON_BLOCKS) return;
+    const c = window.LESSON_BLOCKS.getCount();
+    chip.title = `${window.LESSON_BLOCKS.getXP()} XP earned from interactive exercises`;
+    if (c.total === 0) { chip.style.display = "none"; return; }
+    chip.style.display = "";
+    chipVal.textContent = `${c.done}/${c.total}`;
+  }
+
+  document.addEventListener("lessonblocks:changed", syncXpChip);
+
+  // ============ Keyboard navigation: J/K jump between stages ============
+  function initKeyboardNav() {
+    document.addEventListener("keydown", (e) => {
+      if (e.target.matches("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key !== "j" && e.key !== "k") return;
+      const roadmap = getRoadmap();
+      const idx = roadmap.stages.findIndex(s => s.id === state.currentStageId);
+      const nextIdx = e.key === "j" ? idx + 1 : idx - 1;
+      if (nextIdx < 0 || nextIdx >= roadmap.stages.length) return;
+      switchStage(roadmap.stages[nextIdx].id);
+    });
+  }
+
   // ============ 2. Render Main Stage View ============
   function renderStage(stageId) {
-    const stage = window.COURSE_DATA.find((s) => s.id === stageId);
+    const roadmap = getRoadmap();
+    const stage = roadmap.stages.find((s) => s.id === stageId);
     if (!stage) return;
 
     state.currentStageId = stageId;
+    state.lastStages[roadmap.id] = stageId;
+    localStorage.setItem("ai_course_last_stages", JSON.stringify(state.lastStages));
     renderSidebar();
 
-    const isCompleted = state.completedStages.includes(stageId);
-    const stageIndex = window.COURSE_DATA.findIndex((s) => s.id === stageId);
-    const prevStage = stageIndex > 0 ? window.COURSE_DATA[stageIndex - 1] : null;
-    const nextStage = stageIndex < window.COURSE_DATA.length - 1 ? window.COURSE_DATA[stageIndex + 1] : null;
+    const minimal = roadmap.minimal === true;
+    const isCompleted = !minimal && state.completedStages.includes(stageId);
+    const stageIndex = roadmap.stages.findIndex((s) => s.id === stageId);
+    const prevStage = stageIndex > 0 ? roadmap.stages[stageIndex - 1] : null;
+    const nextStage = stageIndex < roadmap.stages.length - 1 ? roadmap.stages[stageIndex + 1] : null;
+
+    const lessonTotal = minimal ? 0 : stage.modules.reduce((n, m) => n + m.lessons.filter(l => !/^Resources for/.test(l.title)).length, 0);
+    const lessonDone = minimal ? 0 : countLessonsDone(stage);
 
     mainViewport.innerHTML = `
+      ${stageIndex === 0 && !minimal ? buildOriginHero() : ''}
+      ${minimal ? '' : `<nav class="breadcrumb-trail" aria-label="Breadcrumb">
+        <span class="crumb crumb-root">${roadmap.id === "vibe" ? "Vibe Coding" : "Full Course"}</span>
+        <span class="crumb-sep">/</span>
+        <a href="#" class="crumb" data-crumb-stage="${stageId}">Stage ${stage.number}</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb crumb-current">${stage.title}</span>
+      </nav>`}
       <div class="stage-hero">
         <div class="stage-tag">
           <span>STAGE ${stage.number}</span> • <span>${stage.modules.length} MODULES</span>
+          ${!minimal && lessonTotal ? `<span>• <span class="lesson-progress-inline">${lessonDone}/${lessonTotal} lessons</span></span>` : ''}
           ${isCompleted ? '<span style="margin-left:0.5rem; color:var(--success-accent);">✓ COMPLETED</span>' : ''}
         </div>
         <h1 class="stage-title">${stage.title}</h1>
         <p class="stage-subtitle">${stage.subtitle}</p>
-        <button id="toggle-complete-btn" class="api-btn" style="margin-top:1.25rem; background:${isCompleted ? 'var(--success-accent)' : 'var(--primary-accent)'}">
+        ${minimal ? '' : `<button id="toggle-complete-btn" class="api-btn" style="margin-top:1.25rem; background:${isCompleted ? 'var(--success-accent)' : 'var(--primary-accent)'}">
           ${isCompleted ? '✓ Stage Completed' : 'Mark Stage as Complete'}
-        </button>
+        </button>`}
       </div>
 
-      <div id="interactive-lab-mount"></div>
+      ${minimal ? '' : '<div id="interactive-lab-mount"></div>'}
 
-      ${stage.modules.map((module) => `
-        <div class="module-card">
-          <h2 class="module-title">${module.title}</h2>
-          ${module.lessons.map((lesson) => {
+      ${minimal ? '' : buildTocRail(stage)}
+
+      ${stage.modules.map((module, modIdx) => `
+        <div class="module-card" id="module-${modIdx}">
+          <h2 class="module-title">${module.icon ? `<img class="module-title-icon" src="${module.icon}" alt="" loading="lazy">` : ""}${module.title}</h2>
+          ${module.lessons.map((lesson, lessonIdx) => {
             const ill = lesson.illustration;
             let illHtml = "";
             if (ill) {
               if (ill.type === "interactive") {
                 illHtml = `<div class="lesson-illustration interactive-visual">${ill.html}</div>`;
               } else {
+                const illClass = ill.className ? ` lesson-illustration ${ill.className}` : " lesson-illustration";
                 illHtml = `
-                  <div class="lesson-illustration">
+                  <div class="${illClass.trim()}">
                     <figure>
                       <img src="${ill.src}" alt="${ill.alt}" loading="lazy">
                       ${ill.caption ? `<figcaption>${ill.caption}</figcaption>` : ""}
@@ -405,26 +604,32 @@ document.addEventListener("DOMContentLoaded", () => {
             const bmActive = isBookmarked(stageId, lesson.title);
             return `
               <div class="lesson-block">
-                <button class="lesson-bookmark-btn ${bmActive ? 'active' : ''}" data-lesson-title="${lesson.title}" title="${bmActive ? 'Remove bookmark' : 'Bookmark this lesson'}">
+                ${minimal ? '' : `<button class="lesson-bookmark-btn ${bmActive ? 'active' : ''}" data-lesson-title="${lesson.title}" title="${bmActive ? 'Remove bookmark' : 'Bookmark this lesson'}">
                   ${bmActive ? '🔖' : '🏷️'} ${bmActive ? 'Bookmarked' : 'Bookmark'}
-                </button>
-                <h3 class="lesson-title">${lesson.title}</h3>
+                </button>`}
+                <div class="lesson-head-row" id="lesson-${modIdx}-${lessonIdx}">
+                  <h3 class="lesson-title">${lesson.title}</h3>
+                  ${minimal || /^Resources for/.test(lesson.title) ? '' : `<button class="lesson-done-btn ${isLessonDone(stageId, lesson.title) ? 'done' : ''}" data-done-lesson="${lesson.title}" aria-pressed="${isLessonDone(stageId, lesson.title)}">
+                    <span class="done-check" aria-hidden="true">✓</span> ${isLessonDone(stageId, lesson.title) ? 'Learned' : 'Mark as learned'}
+                  </button>`}
+                </div>
                 <div class="lesson-body">${formatMarkdown(lesson.content)}</div>
                 ${illHtml}
+                ${!minimal && lesson.interactive && lesson.interactive.length ? `<div class="lesson-blocks-mount" data-lesson-title="${lesson.title}"></div>` : ""}
               </div>
             `;
           }).join("")}
         </div>
       `).join("")}
 
-      <!-- Interactive Quiz Section -->
-      <div class="quiz-section">
+      <!-- Interactive Quiz Section (hidden in minimal roadmaps) -->
+      ${minimal ? '' : `<div class="quiz-section">
         <div class="lab-header">
           <h3>Stage ${stage.number} Knowledge Check</h3>
           <span class="lab-badge">QUIZ</span>
         </div>
         <div id="quiz-container"></div>
-      </div>
+      </div>`}
 
       <!-- Next/Previous Stage Navigation -->
       <div class="stage-nav-buttons">
@@ -447,7 +652,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="stage-nav-btn next" disabled style="opacity:0.5;cursor:default;">
             <div>
               <div class="stage-nav-btn-label">🎉 You've reached the end!</div>
-              <div class="stage-nav-btn-title">Course Complete</div>
+              <div class="stage-nav-btn-title">${roadmap.minimal ? 'Roadmap Complete' : 'Course Complete'}</div>
             </div>
           </button>
         `}
@@ -459,41 +664,92 @@ document.addEventListener("DOMContentLoaded", () => {
       wireInteractiveVisual(el);
     });
 
-    // Mount Interactive Laboratory Widget
+    // Mount in-lesson interactive blocks (checkpoints, challenges, predicts...)
+    if (!minimal && window.LESSON_BLOCKS) {
+      mainViewport.querySelectorAll(".lesson-blocks-mount").forEach((mountEl) => {
+        const lessonTitle = mountEl.getAttribute("data-lesson-title");
+        const mod = stage.modules.find((m) => m.lessons.some((l) => l.title === lessonTitle));
+        const lesson = mod && mod.lessons.find((l) => l.title === lessonTitle);
+        if (lesson && Array.isArray(lesson.interactive)) {
+          window.LESSON_BLOCKS.mount(mountEl, lesson.interactive);
+        }
+      });
+    }
+
+    // Mount Interactive Laboratory Widget (not in minimal roadmaps)
     const labMount = document.getElementById("interactive-lab-mount");
-    if (window.WIDGET_SUITE && labMount) {
+    if (!minimal && window.WIDGET_SUITE && labMount) {
       window.WIDGET_SUITE.renderWidget(stage, labMount);
     }
 
+    // Mount course-opening origin hero (runs the typewriter) on first stage
+    if (!minimal && stageIndex === 0) mountOriginHero();
+
     // Stage Complete Button Handler
-    document.getElementById("toggle-complete-btn").addEventListener("click", () => {
-      if (state.completedStages.includes(stageId)) {
-        state.completedStages = state.completedStages.filter((id) => id !== stageId);
-      } else {
-        state.completedStages.push(stageId);
-      }
-      localStorage.setItem("ai_course_completed_stages", JSON.stringify(state.completedStages));
-      updateProgress();
-      renderStage(stageId);
-    });
+    const completeBtn = document.getElementById("toggle-complete-btn");
+    if (completeBtn) {
+      completeBtn.addEventListener("click", () => {
+        if (state.completedStages.includes(stageId)) {
+          state.completedStages = state.completedStages.filter((id) => id !== stageId);
+        } else {
+          state.completedStages.push(stageId);
+        }
+        localStorage.setItem("ai_course_completed_stages", JSON.stringify(state.completedStages));
+        updateProgress();
+        renderStage(stageId);
+      });
+    }
 
     // Bookmark Button Handlers
-    mainViewport.querySelectorAll(".lesson-bookmark-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const lessonTitle = btn.getAttribute("data-lesson-title");
-        toggleBookmark(stageId, lessonTitle);
-        const bmActive = isBookmarked(stageId, lessonTitle);
-        btn.classList.toggle("active", bmActive);
-        btn.innerHTML = `${bmActive ? '🔖' : '🏷️'} ${bmActive ? 'Bookmarked' : 'Bookmark'}`;
-        btn.title = bmActive ? 'Remove bookmark' : 'Bookmark this lesson';
+    if (!minimal) {
+      mainViewport.querySelectorAll(".lesson-bookmark-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const lessonTitle = btn.getAttribute("data-lesson-title");
+          toggleBookmark(stageId, lessonTitle);
+          const bmActive = isBookmarked(stageId, lessonTitle);
+          btn.classList.toggle("active", bmActive);
+          btn.innerHTML = `${bmActive ? '🔖' : '🏷️'} ${bmActive ? 'Bookmarked' : 'Bookmark'}`;
+          btn.title = bmActive ? 'Remove bookmark' : 'Bookmark this lesson';
+        });
       });
-    });
+
+      // "Mark as learned" handlers
+      mainViewport.querySelectorAll(".lesson-done-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const lessonTitle = btn.getAttribute("data-done-lesson");
+          const nowDone = !isLessonDone(stageId, lessonTitle);
+          setLessonDone(stageId, lessonTitle, nowDone);
+          btn.classList.toggle("done", nowDone);
+          btn.setAttribute("aria-pressed", String(nowDone));
+          btn.innerHTML = `<span class="done-check" aria-hidden="true">✓</span> ${nowDone ? 'Learned' : 'Mark as learned'}`;
+          updateProgress();
+        });
+      });
+    }
+
+    wireTocRail();
 
     // Next/Previous Stage Navigation
     mainViewport.querySelectorAll(".stage-nav-btn[data-stage-id]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-stage-id");
         switchStage(id);
+      });
+    });
+
+    // Internal stage links — [text](#stage-id) in lesson content jumps to another stage
+    mainViewport.querySelectorAll("a[data-nav-stage]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        switchStage(link.getAttribute("data-nav-stage"));
+      });
+    });
+
+    // Breadcrumb stage crumb is clickable (re-navigates / refreshes current stage)
+    mainViewport.querySelectorAll("[data-crumb-stage]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        switchStage(link.getAttribute("data-crumb-stage"));
       });
     });
 
@@ -652,15 +908,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ============ 4. Command Palette (Ctrl+K) Search Engine ============
   function setupSearch() {
+    let activeResultIndex = -1;
+
     function openModal() {
       commandModal.classList.add("open");
       commandInput.focus();
+      activeResultIndex = -1;
       renderSearchResults("");
     }
 
     function closeModal() {
       commandModal.classList.remove("open");
       commandInput.value = "";
+      activeResultIndex = -1;
     }
 
     searchTriggerBtn.addEventListener("click", openModal);
@@ -678,22 +938,56 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    commandInput.addEventListener("keydown", (e) => {
+      if (!commandModal.classList.contains("open")) return;
+      const items = commandResults.querySelectorAll(".search-result-item");
+      if (!items.length) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        activeResultIndex = (activeResultIndex + 1) % items.length;
+        updateActiveSearchResult(items);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        activeResultIndex = (activeResultIndex - 1 + items.length) % items.length;
+        updateActiveSearchResult(items);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (activeResultIndex >= 0 && activeResultIndex < items.length) {
+          items[activeResultIndex].click();
+        }
+      }
+    });
+
+    function updateActiveSearchResult(items) {
+      items.forEach((item, idx) => {
+        if (idx === activeResultIndex) {
+          item.classList.add("keyboard-active");
+          item.scrollIntoView({ block: "nearest" });
+        } else {
+          item.classList.remove("keyboard-active");
+        }
+      });
+    }
+
     commandInput.addEventListener("input", (e) => {
+      activeResultIndex = -1;
       renderSearchResults(e.target.value.toLowerCase().trim());
     });
 
     function renderSearchResults(query) {
+      const roadmap = getRoadmap();
       if (!query) {
         commandResults.innerHTML = `
           <div style="padding:1.5rem; text-align:center; color:var(--text-dim); font-size:0.88rem;">
-            Type to search across all 7 stages, modules, and lessons...
+            Type to search across all ${roadmap.stages.length} stages of the ${roadmap.id === 'course' ? 'course' : 'vibe coding'} roadmap, modules, and lessons...
           </div>
         `;
         return;
       }
 
       const results = [];
-      window.COURSE_DATA.forEach((stage) => {
+      roadmap.stages.forEach((stage) => {
         stage.modules.forEach((mod) => {
           mod.lessons.forEach((les) => {
             if (les.title.toLowerCase().includes(query) || les.content.toLowerCase().includes(query)) {
@@ -731,14 +1025,149 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // ============ Roadmap Switcher ============
+  function refreshRoadmapChrome() {
+    const roadmap = getRoadmap();
+    const minimal = roadmap.minimal === true;
+    document.body.classList.toggle("minimal-roadmap", minimal);
+    document.querySelectorAll(".roadmap-switcher-btn").forEach((btn) => {
+      const isActive = btn.getAttribute("data-roadmap") === state.activeRoadmap;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+    const badge = document.getElementById("brand-badge-label");
+    const brandText = document.getElementById("brand-text-label");
+    if (badge) badge.textContent = minimal ? "VIBE" : "COURSE";
+    if (brandText) brandText.textContent = minimal ? "Vibe Coding Roadmap" : "AI-Powered Coding Roadmap";
+  }
+
+  function switchRoadmap(roadmapId) {
+    if (roadmapId !== "course" && roadmapId !== "vibe") return;
+    state.activeRoadmap = roadmapId;
+    localStorage.setItem("ai_course_active_roadmap", roadmapId);
+    const roadmap = getRoadmap();
+    const saved = state.lastStages[roadmapId];
+    const target = saved && roadmap.stages.some((s) => s.id === saved) ? saved : roadmap.stages[0].id;
+    refreshRoadmapChrome();
+    updateProgress();
+    renderStage(target);
+    if (bookmarksPanel && bookmarksPanel.classList.contains("open")) {
+      bookmarksPanel.classList.remove("open");
+    }
+    closeMobileSidebar();
+  }
+
+  function initRoadmapSwitcher() {
+    document.querySelectorAll(".roadmap-switcher-btn").forEach((btn) => {
+      btn.addEventListener("click", () => switchRoadmap(btn.getAttribute("data-roadmap")));
+    });
+    refreshRoadmapChrome();
+  }
+
+  // ============ Course-opening origin hero (Hello World) ============
+  const HELLO_LINES = [
+    ["// Hello, world. This is where it all starts.", true],
+    ["function becomeDeveloper() {", false],
+    ["  const mindset = \"break big problems into small ones\";", false],
+    ["  const tools = \"AI + curiosity + persistence\";", false],
+    ["  const goal = \"ship something real\";", false],
+    ["}", false],
+    ["", false],
+    ["console.log(becomeDeveloper());", false],
+    ["", false],
+    ["// Output: \"Hello World, and hello to you.\"", true]
+  ];
+
+  function buildOriginHero() {
+    return `
+      <section class="origin-hero" id="origin-hero">
+        <div class="hello-badge">&#9998;&#65039; THE ORIGIN STORY</div>
+        <h2 class="hello-title" id="hello-title">Where It All Starts</h2>
+        <p class="hello-kicker">Every programmer&rsquo;s first words &mdash; typed once, remembered forever.</p>
+        <div class="hello-terminal">
+          <div class="terminal-bar">
+            <span class="terminal-dot terminal-dot-red"></span>
+            <span class="terminal-dot terminal-dot-yellow"></span>
+            <span class="terminal-dot terminal-dot-green"></span>
+            <span class="terminal-title">console &mdash; your_first_program</span>
+          </div>
+          <div class="terminal-body" id="hello-terminal-body"></div>
+        </div>
+        <div class="hello-story">
+          <p><strong>This is where it all starts.</strong> Not with syntax, not with jargon &mdash; but with two words every engineer on Earth has typed.</p>
+          <p>Being a programmer was never about memorizing code. It&rsquo;s about a mindset: breaking big problems into tiny ones, staying curious when things break, and building things that help real people. In the AI era, that mindset matters more than ever &mdash; you don&rsquo;t write every line anymore; you <em>direct</em> the machine, review its work, and own the result.</p>
+          <p>Over the next stages you will debug, design, ship, and maybe break a few things. That is the journey. <strong>Welcome to it.</strong></p>
+        </div>
+        <button class="hello-cta" id="hello-cta-btn">Begin Your Coding Adventure &#8594;</button>
+        <p class="hello-footnote">&mdash; The first of many small wins. Say it out loud: <em>Hello, World.</em></p>
+      </section>
+    `;
+  }
+
+  function mountOriginHero() {
+    const body = document.getElementById("hello-terminal-body");
+    if (!body || body.dataset.typed === "1") return;
+    body.dataset.typed = "1";
+    const cta = document.getElementById("hello-cta-btn");
+    if (cta) cta.addEventListener("click", () => {
+      const first = document.getElementById("module-0");
+      if (first) first.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    const rows = HELLO_LINES.map((line, i) => {
+      const row = document.createElement("div");
+      row.className = "terminal-line";
+      const no = document.createElement("span");
+      no.className = "terminal-line-no";
+      no.textContent = String(i + 1).padStart(2, "0");
+      const txt = document.createElement("span");
+      txt.className = "terminal-line-text" + (line[1] ? " term-comment" : "");
+      row.appendChild(no);
+      row.appendChild(txt);
+      body.appendChild(row);
+      return { text: line[0], txt: txt };
+    });
+    const caret = document.createElement("span");
+    caret.className = "typewriter-caret";
+    let li = 0, ci = 0;
+    function placeCaret() {
+      if (caret.parentNode) caret.parentNode.removeChild(caret);
+      const cur = rows[li];
+      if (cur) cur.txt.appendChild(caret);
+    }
+    placeCaret();
+    function tick() {
+      if (li >= rows.length) {
+        const last = rows[rows.length - 1];
+        if (last) last.txt.appendChild(caret);
+        caret.style.animation = "caret-blink 0.9s steps(1) infinite";
+        return;
+      }
+      const cur = rows[li];
+      if (ci <= cur.text.length) {
+        cur.txt.textContent = cur.text.slice(0, ci);
+        ci++;
+        setTimeout(tick, 22);
+      } else {
+        li++;
+        ci = 0;
+        placeCaret();
+        setTimeout(tick, 150);
+      }
+    }
+    tick();
+  }
+
   // ============ Initialize Everything ============
+  applyEnrichment();
+  if (window.LESSON_BLOCKS) window.LESSON_BLOCKS.init();
   initWelcome();
   initTheme();
   initMobileSidebar();
+  initRoadmapSwitcher();
   initBookmarksPanel();
   initResetProgress();
-  renderSidebar();
-  renderStage("stage-1");
   setupSearch();
+  initKeyboardNav();
+  renderStage(getRoadmap().stages[0].id);
   updateProgress();
 });

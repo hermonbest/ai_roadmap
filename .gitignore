@@ -1,0 +1,2 @@
+# Agent/session state — never ship local worktree state
+.reasonix/

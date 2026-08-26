@@ -71,6 +71,9 @@
 
     if (!toggleBtn || !panel || !messagesEl || !form || !input) return;
 
+    toggleBtn.setAttribute("aria-expanded", "false");
+    panel.setAttribute("aria-hidden", "true");
+
     const history = [];
 
     function appendMessage(role, html) {
@@ -135,14 +138,18 @@
     }
 
     toggleBtn.addEventListener("click", () => {
-      panel.classList.toggle("open");
-      toggleBtn.classList.toggle("hidden", panel.classList.contains("open"));
-      if (panel.classList.contains("open")) input.focus();
+      const isOpen = panel.classList.toggle("open");
+      toggleBtn.classList.toggle("hidden", isOpen);
+      toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      panel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      if (isOpen) input.focus();
     });
 
     closeBtn.addEventListener("click", () => {
       panel.classList.remove("open");
       toggleBtn.classList.remove("hidden");
+      toggleBtn.setAttribute("aria-expanded", "false");
+      panel.setAttribute("aria-hidden", "true");
     });
 
     form.addEventListener("submit", (e) => {

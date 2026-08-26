@@ -1408,7 +1408,7 @@ The goal is to develop a working relationship with AI tools where you handle the
           {
             title: "Resources for Module 5.3",
             content: `- Website: [Google – Developers Blog on AI Coding](https://developers.googleblog.com) — current perspectives on working effectively alongside AI coding tools
-- Video: [How to Learn Anything with AI (2026)](https://www.youtube.com/watch?v=VXmCg7gLEnI) — techniques for using AI as a personal tutor`
+- Video: [Everything You Need to Know About Coding with AI // NOT vibe coding](https://www.youtube.com/watch?v=5fhcklZe-qE) — by **ForrestKnight**: what AI can and can't do for you as a coder, and how to actually use it`
           }
         ]
       }
@@ -1629,17 +1629,6 @@ If something's wrong, tell it specifically what's wrong, the same way you practi
         ],
         answer: 0,
         explanation: "Vercel and Netlify auto-build and deploy static & full-stack web applications straight from GitHub commits."
-      },
-      {
-        question: "Why is it recommended to build the frontend with mock/fake data before connecting a real database?",
-        options: [
-          "Mock data makes the website faster in production",
-          "It isolates UI visual validation before introducing backend complexity",
-          "Databases don't work with HTML directly",
-          "Mock data is required by Vercel's build system"
-        ],
-        answer: 1,
-        explanation: "Prototyping with mock data allows quick iteration on UI structure and layout before wiring up backend APIs and databases."
       }
     ],
     modules: [

@@ -15,6 +15,9 @@
     connect-src 'self' https://generativelanguage.googleapis.com;
   ">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -40,8 +43,8 @@
         <div class="welcome-feature-item">
           <span class="welcome-feature-icon">🧪</span>
           <div>
-            <strong>Interactive Labs</strong>
-            <p>Simulators, sandboxes, and live code editors</p>
+            <strong>Interactive Lessons</strong>
+            <p>Checkpoints, code challenges, and labs in every lesson</p>
           </div>
         </div>
         <div class="welcome-feature-item">
@@ -59,7 +62,10 @@
           </div>
         </div>
       </div>
-      <button class="welcome-start-btn" id="welcome-start-btn">Start Learning →</button>
+      <div class="welcome-paths">
+        <button class="welcome-start-btn" id="welcome-start-btn">Start Learning →</button>
+        <button class="welcome-vibe-btn" id="welcome-vibe-btn">⚡ Start Vibe Coding Instead</button>
+      </div>
       <p class="welcome-note">Your progress is saved automatically in your browser.</p>
     </div>
   </div>
@@ -73,8 +79,8 @@
         <span class="hamburger-line"></span>
       </button>
       <a href="#" class="brand">
-        <span class="brand-badge">COURSE</span>
-        <span class="brand-text">AI-Powered Coding Roadmap</span>
+        <span class="brand-badge" id="brand-badge-label">COURSE</span>
+        <span class="brand-text" id="brand-text-label">AI-Powered Coding Roadmap</span>
       </a>
     </div>
     
@@ -85,6 +91,10 @@
           <circle class="progress-ring-fill" id="progress-ring-fill" cx="18" cy="18" r="14" />
         </svg>
         <span class="progress-ring-text" id="progress-ring-text">0%</span>
+      </div>
+      <div class="xp-chip" id="xp-chip" style="display:none;" role="status">
+        <span class="xp-chip-label">XP</span>
+        <span id="xp-chip-value">0/0</span>
       </div>
       <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
         <span class="theme-icon" id="theme-icon">🌙</span>
@@ -102,7 +112,11 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <div class="sidebar-title">Course Roadmap Stages</div>
+        <div class="roadmap-switcher" role="tablist" aria-label="Choose roadmap">
+          <button class="roadmap-switcher-btn active" data-roadmap="course" role="tab" aria-selected="true">Full Course</button>
+          <button class="roadmap-switcher-btn" data-roadmap="vibe" role="tab" aria-selected="false">Vibe Coding</button>
+        </div>
+        <div class="sidebar-title" id="sidebar-title-label">Course Roadmap Stages</div>
         <div class="sidebar-progress-bar">
           <div class="sidebar-progress-fill" id="sidebar-progress-fill"></div>
         </div>
@@ -167,7 +181,10 @@
 
   <!-- Scripts -->
   <script src="js/course-data.js"></script>
+  <script src="js/vibe-data.js"></script>
+  <script src="js/course-enrichment.js"></script>
   <script src="js/widgets.js"></script>
+  <script src="js/lesson-blocks.js"></script>
   <script src="js/app.js"></script>
   <script src="js/chat.js"></script>
 </body>
